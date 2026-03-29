@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>FlipFlatPanel.Controller</RootNamespace>
+    <AssemblyName>FlipFlatPanel.Controller</AssemblyName>
+    <ApplicationIcon />
+    <Version>1.1.0</Version>
+    <Description>FlipFlat Panel Steuerungs-App</Description>
+    <Authors>FlipFlatPanel Project</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
