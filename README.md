@@ -55,6 +55,7 @@ Arduino Pin 9 ──── Gate
 
 12V DC ──── EL-Inverter ──── Drain
 ```
+https://github.com/lindekai/FlipFlatPanel/blob/main/docs/FlatPanel_KL_V.1.4_Schaltplan.jpg
 
 ## Software-Architektur
 
