@@ -2,6 +2,12 @@
 
 Ein DIY Flat-Field Panel für die Astrofotografie mit Arduino Nano, Servo-Klappe und EL-Folie. Gesteuert über ASCOM CoverCalibrator (Platform 7) für den Einsatz in N.I.N.A. und anderer Astro-Software.
 
+Credits:
+
+Ursprüngliches Konzept, Schaltung und Hardware-Design:
+Moritz Mayer / Dark Matters Discord
+https://discord.gg/darkmatters
+
 ![Status](https://img.shields.io/badge/Status-In%20Entwicklung-yellow)
 ![ASCOM](https://img.shields.io/badge/ASCOM-Platform%207-blue)
 ![Arduino](https://img.shields.io/badge/Arduino-Nano-teal)
@@ -55,7 +61,6 @@ Arduino Pin 9 ──── Gate
 
 12V DC ──── EL-Inverter ──── Drain
 ```
-![Schaltplan](https://github.com/lindekai/FlipFlatPanel/blob/main/docs/FlatPanel_KL_V.1.4_Schaltplan.jpg)
 
 ## Software-Architektur
 
@@ -78,7 +83,7 @@ FlipFlatPanel/
 
 ### 1. Arduino Firmware flashen
 
-1. Öffne `01_Firmware/FlipFlatPanel_v2.ino` in der Arduino IDE
+1. Öffne `01_Firmware/FlipFlatPanel_v3.ino` in der Arduino IDE
 2. Board: **Arduino Nano**
 3. Prozessor: **ATmega328P** (oder "Old Bootloader" je nach Nano-Version)
 4. COM-Port auswählen

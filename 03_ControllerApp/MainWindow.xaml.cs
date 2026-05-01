@@ -1,3 +1,16 @@
+// ============================================================
+// FlipFlat Panel Controller App
+// ============================================================
+// WPF-basierte Steuerungs-App für das FlipFlat Panel.
+// Unterstützt direkten Serial-Modus und ASCOM-Treiber-Modus.
+//
+// Credits:
+//   Ursprüngliches Konzept, Schaltung und Hardware-Design:
+//   Moritz Mayer / Dark Matters Discord
+//   https://discord.gg/darkmatters
+//
+// Lizenz: MIT
+// ============================================================
 using System;
 using System.Diagnostics;
 using System.IO.Ports;
@@ -17,8 +30,8 @@ namespace FlipFlatPanel.Controller
         private const int BAUD_RATE = 57600;
         private const int SERIAL_TIMEOUT_MS = 5000;
         private const string DEVICE_GUID = "16c5e400-a3b1-11ed-87cd-0800200c9a66";
-        private const string APP_VERSION = "1.2.0";
-        private const string GITHUB_URL = "https://github.com/YOUR_USERNAME/FlipFlatPanel";
+        private const string APP_VERSION = "1.2.1";
+        private const string GITHUB_URL = "https://github.com/lindekai/FlipFlatPanel";
 
         private SerialPort serialPort = null;
         private bool isConnected = false;
@@ -61,7 +74,8 @@ namespace FlipFlatPanel.Controller
                 "'Übernehmen' sendet die Werte an den Arduino (temporär).\n" +
                 "'Speichern' schreibt sie ins EEPROM (dauerhaft).\n" +
                 "'Test Open/Close' testet die aktuellen Einstellungen.\n\n" +
-                "TIPP: Zuerst mit 'Übernehmen' testen, dann 'Speichern'.",
+                "TIPP: Zuerst mit 'Übernehmen' testen, dann 'Speichern'.\n\n"+
+                "Clear Skies!",
                 "Hilfe", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

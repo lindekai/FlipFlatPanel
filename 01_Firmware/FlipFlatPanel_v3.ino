@@ -1,9 +1,15 @@
 // ============================================================
 // FlipFlat Panel - Arduino NANO Firmware v3.0
 // ============================================================
+// Credits:
+//   Ursprüngliches Konzept, Schaltung und Hardware-Design:
+//   Moritz Mayer / Dark Matters Discord
+//   https://discord.gg/darkmatters
+//
 // Hardware (NICHT VERÄNDERN):
-//   Pin 8  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
-//   Pin 9  = MOSFET -> EL-Folie (PWM via analogWrite/Timer1)
+//   Pin 7  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
+//   Die PWM-fähigen Pins auf dem ATmega328P (Nano) sind nur: 3, 5, 6, 9, 10, 11.
+//   Hier Pin 9  = MOSFET -> EL-Folie (PWM via analogWrite/Timer1)
 //   Serial = 57600 Baud
 // ============================================================
 // Neu in v3.0:
@@ -49,7 +55,7 @@ constexpr auto ERROR_INVALID_COMMAND  = "ERROR:INVALID_COMMAND";
 // ============================================================
 // Pin-Belegung (HARDWARE - NICHT ÄNDERN)
 // ============================================================
-const int ServoPin = 8;
+const int ServoPin = 7;
 const int ledPin   = 9;
 
 // ============================================================
