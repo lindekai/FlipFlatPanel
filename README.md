@@ -91,6 +91,7 @@ COMMAND:SETBRIGHTNESS:128 → RESULT:SETBRIGHTNESS:128
 
 [Download FlipFlatPanel_Controller_Setup_1.2.1.exe](https://github.com/lindekai/FlipFlatPanel/releases/download/V.1.0.0/FlipFlatPanel_Controller_Setup_1.2.1.exe)
 
+oder
 
 ### 2. Controller-App bauen
 
