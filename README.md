@@ -87,9 +87,9 @@ COMMAND:CLOSE         → RESULT:CLOSE:geschlossen
 COMMAND:SETBRIGHTNESS:128 → RESULT:SETBRIGHTNESS:128
 ```
 
-([Download Ascom-Treiber](https://github.com/lindekai/FlipFlatPanel/releases/download/V.1.0.0/FlipFlatPanel_AscomDriver_Setup_1.0.1.exe) 
+[Download Ascom-FlipFlatPanel_AscomDriver_Setup_1.0.1.exe](https://github.com/lindekai/FlipFlatPanel/releases/download/V.1.0.0/FlipFlatPanel_AscomDriver_Setup_1.0.1.exe) 
 
-([Download Controller-App](https://github.com/lindekai/FlipFlatPanel/releases/download/V.1.0.0/FlipFlatPanel_Controller_Setup_1.2.1.exe)
+[Download FlipFlatPanel_Controller_Setup_1.2.1.exe](https://github.com/lindekai/FlipFlatPanel/releases/download/V.1.0.0/FlipFlatPanel_Controller_Setup_1.2.1.exe)
 
 
 ### 2. Controller-App bauen
