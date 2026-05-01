@@ -68,8 +68,8 @@ Das Projekt besteht aus drei Komponenten:
 
 ```
 FlipFlatPanel/
-├── 01_Firmware/              Arduino Nano Firmware (v2.0)
-│   └── FlipFlatPanel_v2.ino
+├── 01_Firmware/              Arduino Nano Firmware (v3.0)
+│   └── FlipFlatPanel_v3.ino
 ├── 02_AscomDriver/           ASCOM CoverCalibrator Treiber
 │   └── CoverCalibratorHardware.cs
 ├── 03_ControllerApp/         Desktop-Steuerungs-App (WPF)
@@ -189,7 +189,7 @@ const int SERVO_PULSE_CLOSE = 540;    // Mikrosekunden (540-1000)
 
 | Problem | Lösung |
 |---------|--------|
-| Servo reagiert nicht | Firmware v2.0 flashen; Pulsbreiten prüfen |
+| Servo reagiert nicht | Firmware v3.0 flashen; Pulsbreiten prüfen |
 | EL-Folie leuchtet nicht | MOSFET-Verdrahtung prüfen; `COMMAND:SETBRIGHTNESS:255` testen |
 | ASCOM-Timeout | COM-Port prüfen; Serial Monitor schließen |
 | Treiber nicht in N.I.N.A. | `/register` als Administrator ausführen |
