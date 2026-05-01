@@ -1,6 +1,11 @@
 // ============================================================
 // FlipFlat Panel - Arduino NANO Firmware v2.0
 // ============================================================
+// Credits:
+//   Ursprüngliches Konzept, Schaltung und Hardware-Design:
+//   Moritz Mayer / Dark Matters Discord
+//   https://discord.gg/darkmatters
+//
 // Hardware (NICHT VERÄNDERN):
 //   Pin 8  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
 //   Pin 9  = MOSFET -> EL-Folie (PWM via analogWrite/Timer1)
