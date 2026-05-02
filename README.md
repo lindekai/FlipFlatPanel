@@ -1,4 +1,4 @@
-# FlipFlat Panel
+# FlipFlat Panel Arduino Nano // ASCOM
 
 Ein DIY Flat-Field Panel für die Astrofotografie mit Arduino Nano, Servo-Klappe und EL-Folie. Gesteuert über ASCOM CoverCalibrator (Platform 7) für den Einsatz in N.I.N.A. und anderer Astro-Software.
 
