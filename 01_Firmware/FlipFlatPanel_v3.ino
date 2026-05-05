@@ -6,6 +6,10 @@
 //   Moritz Mayer / Dark Matters Discord
 //   https://discord.gg/darkmatters
 //
+//   Author:
+//   Kai Linde
+//   https://github.com/lindekai/
+//
 // Hardware (NICHT VERÄNDERN):
 //   Pin 7  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
 //   Die PWM-fähigen Pins auf dem ATmega328P (Nano) sind nur: 3, 5, 6, 9, 10, 11.
