@@ -17,6 +17,8 @@ https://discord.gg/darkmatters
 
 Das FlipFlat Panel kombiniert einen motorisierten Deckel (Flip) mit einem dimmbaren Flat-Field-Panel (Flat) in einem Gerät. Es kann über N.I.N.A., ASCOM-kompatible Software oder die mitgelieferte Desktop-App gesteuert werden.
 
+![FlipFlat Panel Controller](docs/FlipFlat Panel Controller.jpg)
+
 ### Funktionen
 
 - **Cover-Steuerung**: Servo öffnet und schließt den Deckel automatisch
