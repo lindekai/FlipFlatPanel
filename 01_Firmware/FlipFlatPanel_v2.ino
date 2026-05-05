@@ -6,6 +6,10 @@
 //   Moritz Mayer / Dark Matters Discord
 //   https://discord.gg/darkmatters
 //
+//   Author:
+//   Kai Linde
+//   https://github.com/lindekai/
+//
 // Hardware (NICHT VERÄNDERN):
 //   Pin 8  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
 //   Pin 9  = MOSFET -> EL-Folie (PWM via analogWrite/Timer1)
