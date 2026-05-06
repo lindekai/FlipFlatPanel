@@ -60,7 +60,7 @@ Fertige Gerberdatei für zum Beispiel JLCPCB.
 Die Platine hat einen verbauten Stepdown von 12V auf 5V für den Servo.
 Stand jetzt, den 06.05.2026, ist die Paltine noch nicht final getestet.
 
-![Platine](PCB/PCB_Image.png)
+![Platine](PCB/PCB_Image)
 ![Platine](PCB/Schematic.png)
 
 ## Software-Architektur
