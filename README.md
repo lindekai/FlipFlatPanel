@@ -53,7 +53,6 @@ Das FlipFlat Panel kombiniert einen motorisierten Deckel (Flip) mit einem dimmba
 Der IRFZ44N MOSFET schaltet die Masse-Seite des EL-Inverters. Ein 10kΩ Pull-Down-Widerstand am Gate sorgt dafür, dass die EL-Folie beim Arduino-Start dunkel bleibt.
 
 ![Schaltplan](docs/FlatPanel_KL_V.1.4_Schaltplan.jpg)
-![Platine](PCB)
 
 ### PCB
 Fertige Gerberdatei für zum Beispiel JLCPCB.
