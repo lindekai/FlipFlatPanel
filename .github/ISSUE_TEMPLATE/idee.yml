@@ -1,0 +1,15 @@
+name: Idee vorschlagen
+description: Neue Funktion oder Verbesserung
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idee
+    attributes:
+      label: Was wünschst du dir, und wofür brauchst du es?
+    validations:
+      required: true
+  - type: textarea
+    id: umsetzung
+    attributes:
+      label: Hast du schon eine Idee zur Umsetzung?
+      description: Zum Beispiel neuer Befehl im seriellen Protokoll, Hardware-Änderung, Einstellung in der App

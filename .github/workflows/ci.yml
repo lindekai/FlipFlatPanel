@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  AVR_CORE: arduino:avr@1.8.6
+
+jobs:
+  firmware:
+    name: Firmware kompilieren (Nano)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: arduino/setup-arduino-cli@v2
+      - uses: actions/cache@v6
+        with:
+          path: ~/.arduino15
+          key: arduino-${{ runner.os }}-${{ env.AVR_CORE }}
+      - name: AVR-Boardpaket installieren
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install "$AVR_CORE"
+      # arduino-cli verlangt einen Sketch-Ordner mit gleichem Namen wie die .ino-Datei
+      - name: Kompilieren
+        run: |
+          mkdir -p build/FlipFlatPanel_v3
+          cp 01_Firmware/FlipFlatPanel_v3.ino build/FlipFlatPanel_v3/
+          arduino-cli compile --fqbn arduino:avr:nano --warnings all build/FlipFlatPanel_v3
+
+  controller-app:
+    name: Controller-App bauen (WPF)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Bauen
+        run: dotnet build 03_ControllerApp/FlipFlatPanel.Controller.csproj -c Release

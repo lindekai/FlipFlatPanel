@@ -7,6 +7,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/lindekai/FlipFlatPanel/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lindekai/FlipFlatPanel/ci.yml?branch=main&style=flat-square&label=CI"></a>
   <img alt="Arduino Nano" src="https://img.shields.io/badge/Arduino-Nano-00878F?style=flat-square&logo=arduino&logoColor=white">
   <img alt="Firmware v3.1" src="https://img.shields.io/badge/Firmware-v3.1-0A7FA8?style=flat-square">
   <img alt="ASCOM Platform 7" src="https://img.shields.io/badge/ASCOM-Platform%207-2F6FDE?style=flat-square">
@@ -22,7 +23,9 @@
   <a href="#installation"><b>Installation</b></a> ·
   <a href="#serielles-protokoll"><b>Protokoll</b></a> ·
   <a href="#verwendung-in-nina"><b>N.I.N.A.</b></a> ·
-  <a href="#fehlerbehebung"><b>Fehlerbehebung</b></a>
+  <a href="#fehlerbehebung"><b>Fehlerbehebung</b></a> ·
+  <a href="CHANGELOG.md"><b>Changelog</b></a> ·
+  <a href="CONTRIBUTING.md"><b>Mitmachen</b></a>
 </p>
 
 Ein DIY Flat-Field-Panel für die Astrofotografie mit Arduino Nano, Servo-Klappe und EL-Folie. Gesteuert wird es über ASCOM CoverCalibrator (Platform 7), zum Beispiel aus N.I.N.A. oder anderer Astro-Software.
@@ -257,11 +260,8 @@ const int DEFAULT_CLOSE_PULSE = 540;   // Mikrosekunden
 
 ## Lizenz
 
-MIT License, siehe [LICENSE](LICENSE).
+MIT License, siehe [LICENSE](LICENSE). Ursprüngliches Konzept und Hardware-Design: Moritz Mayer / [Dark Matters Discord](https://discord.gg/darkmatters).
 
-## Mitwirken
+## Mitmachen
 
-Pull Requests und Issues sind willkommen! Bitte beachte:
-- Firmware-Änderungen müssen die Pin-Belegung beibehalten
-- Das serielle Protokoll muss abwärtskompatibel bleiben
-- ASCOM-Treiber-Änderungen müssen mit ConformU getestet werden
+Pull Requests und Issues sind willkommen! Die Regeln (Pin-Belegung, abwärtskompatibles Protokoll, ConformU) stehen in [CONTRIBUTING.md](CONTRIBUTING.md), Änderungen im [CHANGELOG](CHANGELOG.md).

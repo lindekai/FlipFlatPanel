@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Dark Matters Discord
+    url: https://discord.gg/darkmatters
+    about: Fragen zum Nachbau und zur ursprünglichen Hardware – dort ist die Community.
+  - name: ASCOM Platform
+    url: https://ascom-standards.org/
+    about: Probleme mit der ASCOM Platform selbst gehören dorthin.
