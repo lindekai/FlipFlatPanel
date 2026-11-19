@@ -7,7 +7,7 @@
     <RootNamespace>FlipFlatPanel.Controller</RootNamespace>
     <AssemblyName>FlipFlatPanel.Controller</AssemblyName>
     <ApplicationIcon />
-    <Version>1.1.0</Version>
+    <Version>1.2.1</Version>
     <Description>FlipFlat Panel Steuerungs-App</Description>
     <Authors>FlipFlatPanel Project</Authors>
   </PropertyGroup>

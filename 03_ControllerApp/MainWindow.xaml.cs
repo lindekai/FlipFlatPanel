@@ -29,6 +29,7 @@ namespace FlipFlatPanel.Controller
     {
         private const int BAUD_RATE = 57600;
         private const int SERIAL_TIMEOUT_MS = 5000;
+        private const int MOVE_TIMEOUT_MS = 30000;  // Servo-Fahrt dauert bei Speed 1-5 oder SoftClose deutlich länger als 5s
         private const string DEVICE_GUID = "16c5e400-a3b1-11ed-87cd-0800200c9a66";
         private const string APP_VERSION = "1.2.1";
         private const string GITHUB_URL = "https://github.com/lindekai/FlipFlatPanel";
@@ -37,6 +38,7 @@ namespace FlipFlatPanel.Controller
         private bool isConnected = false;
         private bool isSerialMode = true;
         private dynamic ascomDevice = null;
+        private readonly SemaphoreSlim serialGate = new SemaphoreSlim(1, 1);  // Immer nur ein Befehl gleichzeitig auf der Leitung
 
         private DispatcherTimer brightnessTimer;
         private bool isBrightnessUserChange = true;
@@ -226,8 +228,8 @@ namespace FlipFlatPanel.Controller
             ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0xB3, 0x47));
             try
             {
-                if (isSerialMode) { Log("TX: COMMAND:OPEN"); var r = await SendSerialCommand("COMMAND:OPEN"); Log("RX: " + (r ?? "keine")); txtCoverState.Text = r?.Contains("offen") == true ? "Offen" : "Fehler"; ledCover.Fill = new SolidColorBrush(r?.Contains("offen") == true ? Color.FromRgb(0x6B, 0xCB, 0x77) : Color.FromRgb(0xFF, 0x6B, 0x6B)); }
-                else { await Task.Run(() => ascomDevice.OpenCover()); txtCoverState.Text = "Offen"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0x6B, 0xCB, 0x77)); Log("Cover geöffnet."); }
+                if (isSerialMode) { Log("TX: COMMAND:OPEN"); var r = await SendSerialCommand("COMMAND:OPEN", MOVE_TIMEOUT_MS); Log("RX: " + (r ?? "keine")); txtCoverState.Text = r?.Contains("offen") == true ? "Offen" : "Fehler"; ledCover.Fill = new SolidColorBrush(r?.Contains("offen") == true ? Color.FromRgb(0x6B, 0xCB, 0x77) : Color.FromRgb(0xFF, 0x6B, 0x6B)); }
+                else { bool ok = await AscomMoveCover(true) == 3; txtCoverState.Text = ok ? "Offen" : "Fehler"; ledCover.Fill = new SolidColorBrush(ok ? Color.FromRgb(0x6B, 0xCB, 0x77) : Color.FromRgb(0xFF, 0x6B, 0x6B)); Log(ok ? "Cover geöffnet." : "\u2717 Cover meldet Fehler nach dem Öffnen."); }
             }
             catch (Exception ex) { Log("\u2717 " + ex.Message); txtCoverState.Text = "Fehler"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B)); }
             finally { SetControlsEnabled(true); }
@@ -240,11 +242,30 @@ namespace FlipFlatPanel.Controller
             ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0xB3, 0x47));
             try
             {
-                if (isSerialMode) { Log("TX: COMMAND:CLOSE"); var r = await SendSerialCommand("COMMAND:CLOSE"); Log("RX: " + (r ?? "keine")); txtCoverState.Text = r?.Contains("geschlossen") == true ? "Geschlossen" : "Fehler"; ledCover.Fill = new SolidColorBrush(r?.Contains("geschlossen") == true ? Color.FromRgb(0x5B, 0x9B, 0xD5) : Color.FromRgb(0xFF, 0x6B, 0x6B)); }
-                else { await Task.Run(() => ascomDevice.CloseCover()); txtCoverState.Text = "Geschlossen"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0x5B, 0x9B, 0xD5)); Log("Cover geschlossen."); }
+                if (isSerialMode) { Log("TX: COMMAND:CLOSE"); var r = await SendSerialCommand("COMMAND:CLOSE", MOVE_TIMEOUT_MS); Log("RX: " + (r ?? "keine")); txtCoverState.Text = r?.Contains("geschlossen") == true ? "Geschlossen" : "Fehler"; ledCover.Fill = new SolidColorBrush(r?.Contains("geschlossen") == true ? Color.FromRgb(0x5B, 0x9B, 0xD5) : Color.FromRgb(0xFF, 0x6B, 0x6B)); }
+                else { bool ok = await AscomMoveCover(false) == 1; txtCoverState.Text = ok ? "Geschlossen" : "Fehler"; ledCover.Fill = new SolidColorBrush(ok ? Color.FromRgb(0x5B, 0x9B, 0xD5) : Color.FromRgb(0xFF, 0x6B, 0x6B)); Log(ok ? "Cover geschlossen." : "\u2717 Cover meldet Fehler nach dem Schließen."); }
             }
             catch (Exception ex) { Log("\u2717 " + ex.Message); txtCoverState.Text = "Fehler"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x6B)); }
             finally { SetControlsEnabled(true); }
+        }
+
+        /// <summary>
+        /// ASCOM: OpenCover/CloseCover kehren sofort zurück (Platform 7). Wartet über CoverMoving
+        /// auf das Ende der Fahrt und liefert den CoverState (1 = Closed, 3 = Open, 5 = Error).
+        /// </summary>
+        private Task<int> AscomMoveCover(bool open)
+        {
+            return Task.Run(() =>
+            {
+                if (open) ascomDevice.OpenCover(); else ascomDevice.CloseCover();
+                var sw = Stopwatch.StartNew();
+                while ((bool)ascomDevice.CoverMoving)
+                {
+                    if (sw.ElapsedMilliseconds > MOVE_TIMEOUT_MS + 5000) throw new TimeoutException("Cover-Fahrt dauert zu lange.");
+                    Thread.Sleep(250);
+                }
+                return (int)ascomDevice.CoverState;
+            });
         }
 
         // ============================================================
@@ -330,23 +351,29 @@ namespace FlipFlatPanel.Controller
 
         private void SoftClose_Changed(object sender, RoutedEventArgs e) { /* Wird erst bei Übernehmen gesendet */ }
 
+        private async Task<bool> ApplyServoSettings()
+        {
+            int openVal = (int)sliderServoOpen.Value;
+            int closeVal = (int)sliderServoClose.Value;
+            int speedVal = (int)sliderSpeed.Value;
+            bool softClose = chkSoftClose.IsChecked == true;
+
+            Log("Sende Servo-Einstellungen...");
+            bool ok = await SendSerialCommand("COMMAND:SETOPEN:" + openVal) != null;
+            ok &= await SendSerialCommand("COMMAND:SETCLOSE:" + closeVal) != null;
+            ok &= await SendSerialCommand("COMMAND:SETSPEED:" + speedVal) != null;
+            ok &= await SendSerialCommand("COMMAND:SETSOFTCLOSE:" + (softClose ? "1" : "0")) != null;
+            return ok;
+        }
+
         private async void ServoApply_Click(object sender, RoutedEventArgs e)
         {
             if (!isConnected) return;
             SetControlsEnabled(false);
             try
             {
-                int openVal = (int)sliderServoOpen.Value;
-                int closeVal = (int)sliderServoClose.Value;
-                int speedVal = (int)sliderSpeed.Value;
-                bool softClose = chkSoftClose.IsChecked == true;
-
-                Log("Sende Servo-Einstellungen...");
-                await SendSerialCommand("COMMAND:SETOPEN:" + openVal);
-                await SendSerialCommand("COMMAND:SETCLOSE:" + closeVal);
-                await SendSerialCommand("COMMAND:SETSPEED:" + speedVal);
-                await SendSerialCommand("COMMAND:SETSOFTCLOSE:" + (softClose ? "1" : "0"));
-                Log("\u2713 Einstellungen übernommen (temporär).");
+                if (await ApplyServoSettings()) Log("\u2713 Einstellungen übernommen (temporär).");
+                else Log("\u2717 Nicht alle Einstellungen wurden bestätigt.");
             }
             catch (Exception ex) { Log("\u2717 Fehler: " + ex.Message); }
             finally { SetControlsEnabled(true); }
@@ -355,15 +382,16 @@ namespace FlipFlatPanel.Controller
         private async void ServoSave_Click(object sender, RoutedEventArgs e)
         {
             if (!isConnected) return;
+            SetControlsEnabled(false);
             try
             {
-                // Erst übernehmen, dann speichern
-                ServoApply_Click(sender, e);
-                await Task.Delay(300);
+                // Erst übernehmen, dann speichern – nur wenn alle Werte angekommen sind
+                if (!await ApplyServoSettings()) { Log("\u2717 Speichern abgebrochen: Einstellungen nicht bestätigt."); return; }
                 var r = await SendSerialCommand("COMMAND:SAVE");
-                Log("\u2713 Einstellungen im EEPROM gespeichert: " + (r ?? ""));
+                Log(r != null ? "\u2713 Einstellungen im EEPROM gespeichert: " + r : "\u2717 Speichern nicht bestätigt.");
             }
             catch (Exception ex) { Log("\u2717 Speichern fehlgeschlagen: " + ex.Message); }
+            finally { SetControlsEnabled(true); }
         }
 
         private async void ServoTestOpen_Click(object sender, RoutedEventArgs e)
@@ -374,7 +402,7 @@ namespace FlipFlatPanel.Controller
             ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0xB3, 0x47));
             try
             {
-                var r = await SendSerialCommand("COMMAND:OPEN");
+                var r = await SendSerialCommand("COMMAND:OPEN", MOVE_TIMEOUT_MS);
                 Log("Test Open: " + (r ?? "keine Antwort"));
                 if (r?.Contains("offen") == true) { txtCoverState.Text = "Offen"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0x6B, 0xCB, 0x77)); }
             }
@@ -390,7 +418,7 @@ namespace FlipFlatPanel.Controller
             ledCover.Fill = new SolidColorBrush(Color.FromRgb(0xFF, 0xB3, 0x47));
             try
             {
-                var r = await SendSerialCommand("COMMAND:CLOSE");
+                var r = await SendSerialCommand("COMMAND:CLOSE", MOVE_TIMEOUT_MS);
                 Log("Test Close: " + (r ?? "keine Antwort"));
                 if (r?.Contains("geschlossen") == true) { txtCoverState.Text = "Geschlossen"; ledCover.Fill = new SolidColorBrush(Color.FromRgb(0x5B, 0x9B, 0xD5)); }
             }
@@ -414,20 +442,27 @@ namespace FlipFlatPanel.Controller
         // ============================================================
         // Serial
         // ============================================================
-        private async Task<string> SendSerialCommand(string command)
+        private async Task<string> SendSerialCommand(string command, int timeoutMs = SERIAL_TIMEOUT_MS)
         {
-            return await Task.Run(() =>
+            await serialGate.WaitAsync();
+            try
             {
-                try
+                return await Task.Run(() =>
                 {
-                    if (serialPort == null || !serialPort.IsOpen) return null;
-                    serialPort.DiscardInBuffer();
-                    serialPort.WriteLine(command);
-                    return serialPort.ReadLine().Trim();
-                }
-                catch (TimeoutException) { Dispatcher.Invoke(() => Log("\u23F1 Timeout: " + command)); return null; }
-                catch (Exception ex) { Dispatcher.Invoke(() => Log("\u2717 Serial: " + ex.Message)); return null; }
-            });
+                    try
+                    {
+                        if (serialPort == null || !serialPort.IsOpen) return null;
+                        serialPort.ReadTimeout = timeoutMs;
+                        serialPort.DiscardInBuffer();
+                        serialPort.WriteLine(command);
+                        return serialPort.ReadLine().Trim();
+                    }
+                    catch (TimeoutException) { Dispatcher.Invoke(() => Log("\u23F1 Timeout: " + command)); return null; }
+                    catch (Exception ex) { Dispatcher.Invoke(() => Log("\u2717 Serial: " + ex.Message)); return null; }
+                    finally { try { if (serialPort?.IsOpen == true) serialPort.ReadTimeout = SERIAL_TIMEOUT_MS; } catch { } }
+                });
+            }
+            finally { serialGate.Release(); }
         }
 
         // ============================================================
@@ -503,9 +538,10 @@ namespace FlipFlatPanel.Controller
             sliderBrightness.IsEnabled = s; txtBrightnessInput.IsEnabled = s; btnBrightnessSend.IsEnabled = s;
             btnBright0.IsEnabled = s; btnBright25.IsEnabled = s; btnBright50.IsEnabled = s; btnBright75.IsEnabled = s; btnBright100.IsEnabled = s;
             btnPing.IsEnabled = s;
-            // Servo-Einstellungen
-            sliderServoOpen.IsEnabled = s; sliderServoClose.IsEnabled = s; sliderSpeed.IsEnabled = s; chkSoftClose.IsEnabled = s;
-            btnServoApply.IsEnabled = s; btnServoSave.IsEnabled = s; btnServoTestOpen.IsEnabled = s; btnServoTestClose.IsEnabled = s;
+            // Servo-Einstellungen (nur im Direkt-Modus – im ASCOM-Modus gibt es keinen seriellen Port)
+            bool sv = s && isSerialMode;
+            sliderServoOpen.IsEnabled = sv; sliderServoClose.IsEnabled = sv; sliderSpeed.IsEnabled = sv; chkSoftClose.IsEnabled = sv;
+            btnServoApply.IsEnabled = sv; btnServoSave.IsEnabled = sv; btnServoTestOpen.IsEnabled = sv; btnServoTestClose.IsEnabled = sv;
             // Nicht-verbunden
             cmbPorts.IsEnabled = !isConnected && isSerialMode;
             rbSerial.IsEnabled = !isConnected; rbAscom.IsEnabled = !isConnected;
