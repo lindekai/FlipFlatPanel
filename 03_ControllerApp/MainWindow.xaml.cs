@@ -43,7 +43,6 @@ namespace FlipFlatPanel.Controller
         private DispatcherTimer brightnessTimer;
         private bool isBrightnessUserChange = true;
         private bool isBrightnessInputChange = false;
-        private bool isSettingsLoading = false; // Verhindert Senden während dem Laden
 
         public MainWindow()
         {
@@ -313,7 +312,6 @@ namespace FlipFlatPanel.Controller
         // ============================================================
         private async Task LoadServoSettings()
         {
-            isSettingsLoading = true;
             try
             {
                 Log("Lade Servo-Einstellungen...");
@@ -337,7 +335,6 @@ namespace FlipFlatPanel.Controller
                 Log("Servo-Einstellungen geladen.");
             }
             catch (Exception ex) { Log("Warnung: Servo-Einstellungen konnten nicht geladen werden: " + ex.Message); }
-            finally { isSettingsLoading = false; }
         }
 
         private void ServoOpen_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
