@@ -60,7 +60,8 @@ namespace ASCOM.FlipFlatPanel.CoverCalibrator
 
         private static SerialPort serialPort = null;
         private static readonly object serialLock = new object();
-        private static CoverStatus currentCoverState = CoverStatus.Unknown;
+        private static volatile CoverStatus currentCoverState = CoverStatus.Unknown;  // wird vom Hintergrund-Task der Servo-Fahrt geschrieben
+        private static readonly object coverMoveLock = new object();
         private static CalibratorStatus currentCalibratorState = CalibratorStatus.Off;
         private static int currentBrightness = 0;
 
@@ -224,35 +225,48 @@ namespace ASCOM.FlipFlatPanel.CoverCalibrator
         internal static CoverStatus CoverState { get { return currentCoverState; } }
         internal static bool CoverMoving { get { return currentCoverState == CoverStatus.Moving; } }
 
-        internal static void OpenCover()
+        internal static void OpenCover() { StartCoverMove("OpenCover", "COMMAND:OPEN", "offen", CoverStatus.Open); }
+        internal static void CloseCover() { StartCoverMove("CloseCover", "COMMAND:CLOSE", "geschlossen", CoverStatus.Closed); }
+
+        /// <summary>
+        /// Startet eine Servo-Fahrt im Hintergrund und kehrt sofort zurück (ICoverCalibratorV2: asynchron).
+        /// Der Client verfolgt die Fahrt über CoverState / CoverMoving; Fehler enden in CoverStatus.Error.
+        /// </summary>
+        private static void StartCoverMove(string method, string command, string expectedResponse, CoverStatus targetState)
         {
-            CheckConnected("OpenCover");
-            currentCoverState = CoverStatus.Moving;
-            try
+            CheckConnected(method);
+            lock (coverMoveLock)
             {
-                // SendCommandLong: 30s Timeout für langsame Bewegungen + SoftClose
-                string r = SendCommandLong("COMMAND:OPEN");
-                currentCoverState = r?.Contains("offen") == true ? CoverStatus.Open : CoverStatus.Error;
-                if (currentCoverState == CoverStatus.Error) throw new DriverException("OpenCover failed.");
+                if (currentCoverState == CoverStatus.Moving)
+                    throw new ASCOM.InvalidOperationException($"{method}: Cover is already moving.");
+                currentCoverState = CoverStatus.Moving;
             }
-            catch (TimeoutException) { currentCoverState = CoverStatus.Error; throw new DriverException("OpenCover timeout."); }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    // SendCommandLong: 30s Timeout für langsame Bewegungen + SoftClose
+                    string r = SendCommandLong(command);
+                    if (!connectedState) return;  // Während der Fahrt getrennt – SetConnected hat den Zustand bereits zurückgesetzt
+                    if (r?.Contains(expectedResponse) == true) currentCoverState = targetState;
+                    else { currentCoverState = CoverStatus.Error; LogMessage(method, $"Unexpected response: {r}"); }
+                }
+                catch (Exception ex)
+                {
+                    if (connectedState) currentCoverState = CoverStatus.Error;
+                    LogMessage(method, $"Move failed: {ex.Message}");
+                }
+            });
         }
 
-        internal static void CloseCover()
+        internal static void HaltCover()
         {
-            CheckConnected("CloseCover");
-            currentCoverState = CoverStatus.Moving;
-            try
-            {
-                // SendCommandLong: 30s Timeout für langsame Bewegungen + SoftClose
-                string r = SendCommandLong("COMMAND:CLOSE");
-                currentCoverState = r?.Contains("geschlossen") == true ? CoverStatus.Closed : CoverStatus.Error;
-                if (currentCoverState == CoverStatus.Error) throw new DriverException("CloseCover failed.");
-            }
-            catch (TimeoutException) { currentCoverState = CoverStatus.Error; throw new DriverException("CloseCover timeout."); }
+            // Die Firmware bewegt den Servo blockierend und kann nicht unterbrochen werden.
+            // Laut ASCOM-Spezifikation muss dann MethodNotImplementedException geworfen werden.
+            LogMessage("HaltCover", "Not supported by firmware.");
+            throw new MethodNotImplementedException("HaltCover");
         }
-
-        internal static void HaltCover() { LogMessage("HaltCover", "Halt requested."); }
 
         internal static CalibratorStatus CalibratorState { get { return currentCalibratorState; } }
         internal static bool CalibratorChanging { get { return false; } }
