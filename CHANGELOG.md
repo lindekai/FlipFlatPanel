@@ -6,7 +6,7 @@ Alle relevanten Änderungen am Projekt.
 
 ### Firmware v3.1
 - 🔌 **Servo-Pin D7 → D8** – passend zur Platine. An D7 liegt dort die Heizfolie, mit v3.0 hätte sich der Servo auf der Platine nicht bewegt.
-- 💾 **Letzte Cover-Position im EEPROM** – nach Reset oder Verbinden meldet `POSITION` sofort offen/geschlossen, die erste Fahrt läuft mit Rampe statt zu springen.
+- 💾 **Letzte Cover-Position im EEPROM** – nach Reset oder Verbinden meldet `POSITION` sofort offen/geschlossen, die erste Fahrt läuft mit Rampe statt zu springen. Neue EEPROM-Adresse 7, gespeicherte Servo-Werte bleiben beim Update erhalten.
 
 ### ASCOM-Treiber
 - ⏱️ `OpenCover`/`CloseCover` arbeiten asynchron (ICoverCalibratorV2), Fortschritt über `CoverState`/`CoverMoving`.
@@ -21,6 +21,7 @@ Alle relevanten Änderungen am Projekt.
 ### Projekt
 - 🎨 README mit Hero-Banner, Badges und vollständiger Protokoll-Tabelle.
 - CI (Firmware kompilieren, Controller-App bauen), Issue- und PR-Vorlagen, CONTRIBUTING.
+- 📚 Doku: EEPROM-Belegung, bekannte Einschränkungen (Heizfolie D7, kein HaltCover), CI-Umfang.
 
 ## [V.1.1.0](https://github.com/lindekai/FlipFlatPanel/releases/tag/V.1.1.0) – 2026-05-06 (Pre-Release)
 - ASCOM-Treiber 1.1.0 (Installer).

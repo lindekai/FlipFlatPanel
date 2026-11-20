@@ -238,6 +238,21 @@ Der Treiber implementiert das ICoverCalibratorV2-Interface (Platform 7) mit:
 - `CalibratorState` / `CalibratorChanging`
 - `Brightness` / `MaxBrightness`
 
+### EEPROM-Belegung
+
+| Adresse | Größe | Inhalt |
+|---------|-------|--------|
+| 0 | 1 Byte | Magic Byte `0xA5` – fehlt es, schreibt die Firmware beim Start die Standardwerte |
+| 1–2 | 2 Byte | Open-Puls in µs (High-Byte zuerst) |
+| 3–4 | 2 Byte | Close-Puls in µs (High-Byte zuerst) |
+| 5 | 1 Byte | Geschwindigkeit 1–10 |
+| 6 | 1 Byte | SoftClose (0/1) |
+| 7 | 1 Byte | Letzte Deckel-Position (0 = unbekannt, 1 = offen, 2 = geschlossen), seit v3.1 |
+
+Die Servo-Werte (Adresse 1–6) schreibt nur `COMMAND:SAVE`. Die Deckel-Position schreibt die Firmware nach jeder Fahrt selbst, aber nur wenn sie sich geändert hat (`EEPROM.update`). Treiber und App setzen den Nano beim Verbinden per DTR zurück; dank Adresse 7 kennt er danach trotzdem die Position und fährt die erste Bewegung mit Rampe.
+
+Beim Update von v3.0 auf v3.1 bleiben die gespeicherten Servo-Werte erhalten. Adresse 7 ist dann noch unbeschrieben, die erste Fahrt springt einmal wie bisher, danach ist die Position bekannt.
+
 ### Servo-Endpunkte anpassen
 
 Seit v3.0 musst du dafür nichts mehr neu flashen. Stelle die Endpunkte in der Controller-App ein (Direkt-Modus), teste sie mit „Test Open/Close“ und speichere sie dann ins EEPROM. Die Standardwerte in der Firmware sind:
@@ -246,6 +261,14 @@ Seit v3.0 musst du dafür nichts mehr neu flashen. Stelle die Endpunkte in der C
 const int DEFAULT_OPEN_PULSE  = 2500;  // Mikrosekunden
 const int DEFAULT_CLOSE_PULSE = 540;   // Mikrosekunden
 ```
+
+## Bekannte Einschränkungen
+
+- **Heizfolie (D7):** Die Platine hat einen zweiten MOSFET-Kanal an D7, die Firmware nutzt ihn noch nicht. D7 kann am Nano keine Hardware-PWM, möglich wären nur Ein/Aus, Software-PWM oder ein anderer Pin auf der Platine. Die Entscheidung folgt, wenn die Platine getestet ist.
+- **Kein Abbruch einer Fahrt:** Die Firmware blockiert während der Servo-Fahrt, deshalb gibt es kein `HaltCover`.
+- **Deckel von Hand bewegt:** Wurde der Deckel im ausgeschalteten Zustand bewegt, stimmt die gespeicherte Position nicht. Die erste Fahrt springt dann ohne Rampe ans Ziel.
+- **Platine noch nicht final getestet**, siehe [PCB](#pcb).
+- **CI baut den ASCOM-Treiber nicht:** Das Visual-Studio-Projekt des Treibers liegt nicht im Repo (es entsteht aus den ASCOM-Templates, siehe [Treiber bauen](#4-ascom-treiber-bauen)). Treiber-Änderungen bitte lokal bauen und mit ConformU prüfen.
 
 ## Fehlerbehebung
 
@@ -257,6 +280,8 @@ const int DEFAULT_CLOSE_PULSE = 540;   // Mikrosekunden
 | ASCOM-Timeout | COM-Port prüfen; Serial Monitor schließen |
 | Treiber nicht in N.I.N.A. | `/register` als Administrator ausführen |
 | Arduino wird nicht erkannt | CH340/FTDI-Treiber installieren |
+| Erste Fahrt nach dem Verbinden springt | Deckel wurde von Hand bewegt oder Firmware < v3.1 – nach einer Fahrt ist die Position wieder gespeichert |
+| Deckel läuft bereits (Fehler im Treiber) | Eine Fahrt ist noch aktiv; `CoverMoving` abwarten |
 
 ## Lizenz
 

@@ -23,3 +23,20 @@ Danke für dein Interesse! Besonders hilfreich sind:
 | Controller-App | .NET 8 SDK (Windows) | `dotnet build 03_ControllerApp/FlipFlatPanel.Controller.csproj` |
 | ASCOM-Treiber | Visual Studio 2022 + ASCOM Platform 7 Templates | siehe [README](README.md#4-ascom-treiber-bauen) |
 | Installer | Inno Setup 6 | Skripte in `Installer/Build_Scripte/` |
+
+## CI
+
+Bei jedem Push und Pull Request laufen zwei Jobs:
+
+- **Firmware:** `arduino-cli compile` für `arduino:avr:nano` mit allen Warnungen
+- **Controller-App:** `dotnet build` unter Windows
+
+Der ASCOM-Treiber ist nicht in der CI, weil sein Projekt nicht im Repo liegt. Treiber-Änderungen bitte lokal bauen und mit ConformU testen.
+
+## Banner neu erzeugen
+
+```bash
+python3 tools/hero.py
+```
+
+Das Skript schreibt `docs/images/hero-dark.svg` und `docs/images/hero-light.svg`. Beide Dateien mit committen.
