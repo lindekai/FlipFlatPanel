@@ -18,7 +18,7 @@
 ; ============================================================
 
 #define MyAppName "FlipFlat Panel Controller"
-#define MyAppVersion "1.2.0"
+#define MyAppVersion "1.2.1"
 #define MyAppPublisher "FlipFlatPanel Project (basiert auf einem Konzept von Moritz Mayer / Dark Matters Discord)"
 #define MyAppURL "https://github.com/lindekai/FlipFlatPanel"
 #define MyAppExeName "FlipFlatPanel.Controller.exe"

@@ -1,5 +1,5 @@
 // ============================================================
-// FlipFlat Panel - Arduino NANO Firmware v3.0
+// FlipFlat Panel - Arduino NANO Firmware v3.1
 // ============================================================
 // Credits:
 //   Ursprüngliches Konzept, Schaltung und Hardware-Design:
@@ -11,7 +11,7 @@
 //   https://github.com/lindekai/
 //
 // Hardware (NICHT VERÄNDERN):
-//   Pin 7  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
+//   Pin 8  = Servo (manuelle Pulse, KEIN Timer1/Servo-Library)
 //   Die PWM-fähigen Pins auf dem ATmega328P (Nano) sind nur: 3, 5, 6, 9, 10, 11.
 //   Hier Pin 9  = MOSFET -> EL-Folie (PWM via analogWrite/Timer1)
 //   Serial = 57600 Baud
@@ -22,6 +22,9 @@
 //   - SoftClose-Modus (langsam starten/stoppen)
 //   - EEPROM-Speicherung aller Einstellungen
 //   - Neue Befehle: SETOPEN, SETCLOSE, SETSPEED, SETSOFTCLOSE
+// Neu in v3.1:
+//   - Letzte Cover-Position im EEPROM: Nach Reset/Verbinden meldet
+//     POSITION sofort offen/geschlossen, die erste Fahrt läuft mit Rampe
 // ============================================================
 
 #include <EEPROM.h>
@@ -53,13 +56,13 @@ constexpr auto COMMAND_SAVE           = "COMMAND:SAVE";
 
 // --- Antworten ---
 constexpr auto RESULT_PING = "RESULT:PING:OK:";
-constexpr auto RESULT_INFO = "RESULT:INFO:FlipFlatPanel Firmware v3.0";
+constexpr auto RESULT_INFO = "RESULT:INFO:FlipFlatPanel Firmware v3.1";
 constexpr auto ERROR_INVALID_COMMAND  = "ERROR:INVALID_COMMAND";
 
 // ============================================================
 // Pin-Belegung (HARDWARE - NICHT ÄNDERN)
 // ============================================================
-const int ServoPin = 7;
+const int ServoPin = 8;   // PCB: SERVO_SIGNAL an D8 (D7 = Heizfolie!)
 const int ledPin   = 9;
 
 // ============================================================
@@ -77,6 +80,7 @@ const int EEPROM_OPEN_ADDR      = 1;   // Open Position (2 Bytes)
 const int EEPROM_CLOSE_ADDR     = 3;   // Close Position (2 Bytes)
 const int EEPROM_SPEED_ADDR     = 5;   // Speed (1 Byte)
 const int EEPROM_SOFTCLOSE_ADDR = 6;   // SoftClose (1 Byte)
+const int EEPROM_COVER_ADDR     = 7;   // Letzte Cover-Position (1 Byte, CoverState)
 const byte EEPROM_MAGIC_VALUE   = 0xA5; // Erkennung ob EEPROM initialisiert
 
 // ============================================================
@@ -130,6 +134,7 @@ void setup() {
 
   // Einstellungen aus EEPROM laden
   loadSettings();
+  restoreCoverState();
 
   bufferPos = 0;
 }
@@ -164,8 +169,32 @@ void loadSettings() {
     servoClosePulse = DEFAULT_CLOSE_PULSE;
     servoSpeed = DEFAULT_SPEED;
     softCloseEnabled = DEFAULT_SOFTCLOSE;
+    EEPROM.update(EEPROM_COVER_ADDR, COVER_UNKNOWN);
     saveSettings(); // Schreibt auch Magic Byte
   }
+}
+
+// ============================================================
+// EEPROM: Letzte Cover-Position
+// ============================================================
+// Treiber und App setzen den Nano beim Verbinden per DTR zurück.
+// Ohne gespeicherte Position wäre der Zustand danach "unknown" und
+// die erste Fahrt würde ohne Rampe direkt ans Ziel springen.
+// Wurde der Deckel im ausgeschalteten Zustand von Hand bewegt, stimmt
+// der Wert nicht mehr – dann springt die erste Fahrt einmal wie bisher.
+void restoreCoverState() {
+  byte saved = EEPROM.read(EEPROM_COVER_ADDR);
+  if (saved == COVER_OPEN) {
+    coverState = COVER_OPEN;
+    currentPulsePos = servoOpenPulse;
+  } else if (saved == COVER_CLOSED) {
+    coverState = COVER_CLOSED;
+    currentPulsePos = servoClosePulse;
+  }
+}
+
+void saveCoverState() {
+  EEPROM.update(EEPROM_COVER_ADDR, coverState);  // schreibt nur bei Änderung
 }
 
 void saveSettings() {
@@ -321,6 +350,7 @@ void openCover() {
   coverState = COVER_MOVING;
   moveServo(servoOpenPulse);
   coverState = COVER_OPEN;
+  saveCoverState();
   Serial.println("RESULT:OPEN:offen");
 }
 
@@ -328,6 +358,7 @@ void closeCover() {
   coverState = COVER_MOVING;
   moveServo(servoClosePulse);
   coverState = COVER_CLOSED;
+  saveCoverState();
   Serial.println("RESULT:CLOSE:geschlossen");
 }
 

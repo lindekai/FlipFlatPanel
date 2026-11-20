@@ -19,7 +19,7 @@
 ; ============================================================
 
 #define MyAppName "FlipFlat Panel ASCOM Driver"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "FlipFlatPanel Project (basiert auf einem Konzept von Moritz Mayer / Dark Matters Discord)"
 #define MyAppURL "https://github.com/lindekai/FlipFlatPanel"
 #define MyDriverExe "ASCOM.FlipFlatPanel.exe"

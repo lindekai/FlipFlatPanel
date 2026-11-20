@@ -1,0 +1,39 @@
+name: Fehler melden
+description: Etwas funktioniert nicht wie beschrieben
+labels: ["bug"]
+body:
+  - type: textarea
+    id: was
+    attributes:
+      label: Was ist passiert, was hast du erwartet?
+    validations:
+      required: true
+  - type: dropdown
+    id: teil
+    attributes:
+      label: Betroffener Teil
+      multiple: true
+      options:
+        - Firmware
+        - ASCOM-Treiber
+        - Controller-App
+        - Platine / Hardware
+        - Doku
+    validations:
+      required: true
+  - type: input
+    id: versionen
+    attributes:
+      label: Versionen
+      placeholder: Firmware v3.1 (COMMAND:INFO), Treiber 1.1.0, App 1.2.1, N.I.N.A. 3.x
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware
+      placeholder: Nano-Variante (CH340/FTDI), Servo, EL-Folie, Platine oder Handverdrahtung
+  - type: textarea
+    id: log
+    attributes:
+      label: Protokoll
+      description: Ausgabe aus dem Protokoll-Fenster der App, Serial Monitor oder ASCOM-Trace-Log
+      render: text
