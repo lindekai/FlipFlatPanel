@@ -1,6 +1,6 @@
 # Taukappe mit FlipFlat-Deckel für Skywatcher 200/1000 PDS – Design
 
-Stand: 25.11.2026 · Entwurf Rev H · Status: **Design abgestimmt, Messwerte ausstehend**
+Stand: 25.11.2026 · Entwurf Rev I · Status: **Design abgestimmt, Messwerte ausstehend**
 
 Visueller Entwurf mit Maßzeichnungen, Bewegungsstudie und 3D-Animation:
 [`docs/hardware/taukappe-entwurf.html`](../../hardware/taukappe-entwurf.html)
@@ -28,7 +28,7 @@ Funktioniert gut und wird übernommen: **EL-Folie auf Trägerplatte geklebt**. D
    - Die Innenlippe (1,6 mm, ca. 20 mm tief) greift in den Tubus und zentriert, die Außenschürze liegt außen an, die Schulter sitzt an der Vorderkante.
    - Geschraubt wird durch die **vorhandenen Bohrungen des weißen Rings** in Gewindeeinsätze, die in Verdickungen der Innenlippe sitzen. Es wird nichts gebohrt, die Lage am Umfang ist festgelegt.
    - Überlappung 25 mm, Überstand vor dem Tubus 200 mm.
-3. **Antriebsblock** flach auf dem Frontring, Standard 12 Uhr, vorläufig ca. 130 × 66 × 24 mm (Höhe folgt aus Servo und Inverter). Er nimmt Servo, eine eigene Platine (ESP32, Alpaca) und den EL-Inverter auf, siehe „Elektronik im Antriebsblock“. Vorne steht eine Nase ca. 35 mm über die Kappenkante vor und trägt die Deckelachse. Die Anschlüsse liegen hinten: 12 V und USB-C nur für Service. Der Block wird auf eine Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert.
+3. **Antriebsblock** flach auf dem Frontring, Standard 12 Uhr, vorläufig ca. 130 × 66 × 24 mm (Höhe folgt aus Servo und Inverter). Er nimmt Servo, eine eigene Platine (ESP32, Alpaca) und den EL-Inverter auf, siehe „Elektronik im Antriebsblock“. Vorne steht eine Nase ca. 35 mm über die Kappenkante vor und trägt die Deckelachse. Die 12 V kommen über den Kabelkanal in der Kappenwand, USB-C hinten nur für Service. Der Block wird auf eine Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert.
 4. **Direktantrieb, 270°**: Die Servowelle ist die Deckelachse (geklemmtes Alu-Servohorn 25T), gegenüber sitzt ein 608-Kugellager. Die Achse ist hohl, das EL-Kabel läuft hindurch. Der Deckelarm ist gekröpft, damit der Deckel offen flach auf dem Block liegt (Parkposition).
    - Servo: DS3218 (270°, 20 kg·cm). Statischer Bedarf ca. 4 kg·cm bei ca. 300 g Deckel.
    - Klassischer PWM-Servo, versorgt über einen Wandler auf der eigenen Platine (6 V, mindestens 3 A).
@@ -40,7 +40,13 @@ Funktioniert gut und wird übernommen: **EL-Folie auf Trägerplatte geklebt**. D
    - 2 weitere Magnete halten den offenen Deckel in der Parkposition. Das ist nötig, weil der Servo nach der Fahrt stromlos geschaltet wird. Die Parkmagnete und ein Magnet im Deckelarm lösen zugleich die Hall-Endlagen aus.
    - Die Haltekraft wird über die Dicke der Deckschicht mit einem Testring eingestellt.
 7. **Tau**: Beim Newton beschlägt zuerst der Fangspiegel. Ein Heizkanal der neuen Platine versorgt einen Heizstreifen am Fangspiegelhalter. Geregelt wird nach dem Taupunkt aus dem BME280.
-8. **Elektronik neu**: eigene Platine mit ESP32 und ASCOM Alpaca, zugeschnitten auf den Block. Die Nano-Platine MK3 wird nicht übernommen.
+8. **Ein Block, integrierte Kabelführung** (keine Aufteilung in vorne und hinten, keine losen Einzelkabel):
+   - Die gesamte Elektronik (ESP32, Wandler, MOSFETs, Inverter, Servo, Sensoren) bleibt **in einem Block** an der Taukappe.
+   - **12 V** ist das einzige Kabel von außen. Es kommt an eine Einbaubuchse am hinteren Ende des Klemmrings (12 Uhr). Von dort läuft ein in die Kappenwand eingeformter **Kabelkanal** (ca. 14 × 9 mm außen) bis unter den Block.
+   - **Heizkabel zum Fangspiegel:** Es tritt unter dem Block durch die Kappenwand, läuft innen an der Wand bis zur Lippe und weiter an einer Spinnenstrebe zum Fangspiegel. An der Lippe sitzt ein kleiner Stecker, damit die Kappe abnehmbar bleibt.
+   - **EL-Kabel:** durch die hohle Deckelachse.
+   - Steuerung per Alpaca über WLAN. USB-C am Block nur für Service.
+9. **Elektronik neu**: eigene Platine mit ESP32 und ASCOM Alpaca, zugeschnitten auf den Block. Die Nano-Platine MK3 wird nicht übernommen.
 
 Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, Filz mit Rändelschrauben-Klemmung, Lagenaufbau des Deckels mit Diffusor und Schaum.
 
@@ -88,7 +94,7 @@ Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, F
 
 ### Block
 
-Vorläufig **ca. 130 × 66 × 24 mm**: Platine und Inverter hinten nebeneinander, Servo vorne quer, die Nase trägt die Achse. Hinten 12 V und USB-C (Service), an der Seite der Ausgang für den Heizstreifen am Fangspiegel.
+Vorläufig **ca. 130 × 66 × 24 mm**: Platine und Inverter hinten nebeneinander, Servo vorne quer, die Nase trägt die Achse. Die 12 V kommen über den Kabelkanal von unten in den Block. Hinten liegt USB-C (Service). Das Heizkabel geht nach unten durch die Kappenwand ins Innere.
 
 ## Parameter
 
@@ -114,7 +120,7 @@ Vorläufig **ca. 130 × 66 × 24 mm**: Platine und Inverter hinten nebeneinander
 7. Trägerplatte: Ø, Dicke, Material, Gewicht. Ø der Leuchtfläche, Lage und Höhe des Anschlusses
 8. EL-Inverter: L × B × H, wo die Kabel herauskommen, Befestigung (Laschen, Löcher, nur Gehäuse?)
 9. Verbauter Temperaturfühler (Typ, Kabel). Der Servo ist entschieden: DS3218MG 270°
-10. Lage des Antriebsblocks am Umfang (Sucher, Prismenschiene, Balance)
+10. Lage des Antriebsblocks am Umfang (Sucher, Prismenschiene, Balance) und Winkel der Spinnenstreben. Steht eine Strebe bei 12 Uhr, läuft das Heizkabel direkt an ihr entlang.
 
 ## Risiken
 

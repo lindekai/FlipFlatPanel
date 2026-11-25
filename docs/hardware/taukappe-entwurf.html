@@ -90,7 +90,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 
 <div class="wrap">
 <header>
-  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev H · 25.11.2026</span>
+  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev I · 25.11.2026</span>
   <h1>Taukappe mit FlipFlat-Deckel für den Skywatcher 200/1000 PDS</h1>
   <p class="lead">Konzeptvergleich, Bewegungsstudie und Maßzeichnungen für eine aufsteckbare Taukappe. Deckel mit EL-Folie und Servo sitzen am vorderen Ende, die Elektronik in einem Gehäuse direkt daneben. Alle Maße sind vorläufig und hängen vom gemessenen Tubusdurchmesser ab.</p>
 </header>
@@ -191,6 +191,8 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     bx(70, 23, 35, mPetg, [0, 135.5, 217.5]);
     bx(70.6, 0.6, 120.6, mBlack, [0, 141, 140]);
     bx(10, 9, 3, mBlack, [-16, 130, 79]); bx(9, 4, 3, mAlu, [14, 130, 79]);
+    bx(14, 9, 108, mPetg, [0, 123.5, 26]);
+    cylZ(6, 6, mAlu, [0, 124, -29]);
     // Achse, Servohorn, Lager
     const ax = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 104, 20), mAlu); ax.rotation.z = Math.PI/2; ax.position.set(0, 136, 227); scene.add(ax);
     const horn = new THREE.Mesh(new THREE.CylinderGeometry(11, 11, 4, 24), mAlu); horn.rotation.z = Math.PI/2; horn.position.set(38, 136, 227); scene.add(horn);
@@ -319,6 +321,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <tr><td>Box und Scharnier mit Kabelbindern am Tubus</td><td>nicht wiederholgenau, verrutscht</td><td><b>Randklemmung mit U-Profil</b> (Prinzip wie bei der Strato-Taukappe): Die Kappe wird auf den Tubusrand gesteckt, die Innenlippe zentriert sie. Geschraubt wird durch die vorhandenen Bohrungen des weißen Frontrings. Der Ring wird abgebaut, das spart Gewicht. Die Box wird auf eine angeformte Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert. Abnehmen ohne Werkzeug.</td></tr>
       <tr><td>Servo treibt über Hebel und Schubstange</td><td>Spiel, Winkel begrenzt, Deckel drückt nicht sauber an</td><td><b>Direktantrieb:</b> Die Servowelle ist die Deckelachse (geklemmtes Alu-Servohorn 25T), gegenüber sitzt ein 608-Kugellager. Keine Gelenke, 270° Schwenkbereich.</td></tr>
       <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (≈ 130 × 66 × 24 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, eine eigene, auf den Block zugeschnittene Platine (ESP32, Alpaca) und den Inverter auf und ragt nur etwa 24 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
+      <tr><td>Kabel einzeln außen am Tubus</td><td>unordentlich, Zugentlastung fehlt</td><td><b>Integrierte Kabelführung:</b> Alpaca läuft über WLAN, von außen kommt nur noch 12 V an eine Buchse am Klemmring. Von dort führt ein in die Kappenwand eingeformter Kanal zum Block. Das Heizkabel läuft innen über die Lippe und eine Spinnenstrebe zum Fangspiegel, das EL-Kabel durch die hohle Achse.</td></tr>
       <tr><td>Deckel direkt an der Tubusöffnung</td><td>kein Tauschutz</td><td>Der Deckel sitzt an der Vorderkante einer 200 mm langen Kappe. Die vorhandene Trägerplatte mit aufgeklebter EL-Folie wird übernommen, der neue Deckelrahmen wird um sie herum konstruiert.</td></tr>
     </tbody>
   </table></div>
@@ -453,6 +456,14 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <circle class="f-acc" cx="557" cy="112" r="4.5"/>
       <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock ≈ 130 × 66 × 24</text>
       <path class="lead-l" d="M562 104 L590 84"/><text class="lb" x="593" y="82">Servo direkt</text><text class="lbm" x="593" y="95">auf der Deckelachse</text>
+      <!-- Kabelkanal außen + Heizkabel innen -->
+      <rect x="305" y="120" width="130" height="9" rx="2" fill="var(--cap)"/>
+      <rect x="296" y="114" width="12" height="15" rx="2" fill="var(--accent)"/>
+      <path class="lead-l" d="M300 114 L280 72"/><text class="lb" x="190" y="70">12-V-Buchse am Klemmring</text>
+      <path class="lead-l" d="M380 121 L390 152"/><text class="lb" x="352" y="168">Kabelkanal in der Wand</text>
+      <path d="M445 133 H330 L310 140 V226" fill="none" stroke="var(--warn)" stroke-width="1.4" stroke-dasharray="5 3"/>
+      <rect x="314" y="137" width="8" height="6" fill="var(--warn)"/>
+      <text class="lbm" x="200" y="300" fill="var(--warn)">Heizkabel innen → Strebe → Fangspiegel</text>
       <!-- Deckel geschlossen -->
       <g>
         <path d="M557 112 L561 126 L547 142" fill="none" stroke="var(--lid)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -746,7 +757,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <li>Hat der Tubus vorne einen Kunststoffring oder einen Bördelrand? Wenn ja: Höhe und Ø.</li>
       <li>Lage des Sucherfußes und anderer Anbauteile im vorderen Bereich (Winkel und Abstand).</li>
       <li>Abstand Vorderkante zum Fangspiegel (für Streulicht und Kappenlänge).</li>
-      <li>Wo der Antriebsblock am Umfang sitzen soll, Standard 12 Uhr (Sucher, Prismenschiene, Kabelführung, Balance).</li>
+      <li>Wo der Antriebsblock am Umfang sitzen soll, Standard 12 Uhr (Sucher, Prismenschiene, Kabelführung, Balance). In welchem Winkel stehen die Spinnenstreben? Steht eine bei 12 Uhr, läuft das Heizkabel direkt unter dem Block an ihr entlang.</li>
       <li>Trägerplatte: Ø, Dicke und Material. Dazu Ø der Leuchtfläche der EL-Folie, Lage und Höhe ihres Anschlusses und das Gewicht der Platte mit Folie. Außerdem die Maße des EL-Inverters (L × B × H), wo seine Kabel herauskommen und wie er befestigt ist.</li>
       <li>Höhe des EL-Inverters: Sie bestimmt zusammen mit dem Servo die Blockhöhe.</li>
       <li>Welcher Servo ist heute verbaut (Typ, Drehwinkel)? Welcher Temperaturfühler steckt im Metallstift?</li>
