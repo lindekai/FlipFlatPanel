@@ -2,6 +2,11 @@
 
 Ein DIY Flat-Field Panel für die Astrofotografie mit Arduino Nano, Servo-Klappe und EL-Folie. Gesteuert über ASCOM CoverCalibrator (Platform 7) für den Einsatz in N.I.N.A. und anderer Astro-Software.
 
+> [!TIP]
+> **Nachfolger: [FlipFlat Panel 2](https://github.com/lindekai/FlipFlat-Panel-2)** vereint Taukappe, motorisierten Deckel (270°-Direktantrieb) und Flat-Panel in einer gedruckten Einheit mit ESP32 und ASCOM Alpaca. Neue Entwicklung findet dort statt.
+>
+> **Successor: [FlipFlat Panel 2](https://github.com/lindekai/FlipFlat-Panel-2)** combines dew shield, motorised cover and flat-field panel in one printed unit with ESP32 and ASCOM Alpaca. New development happens there.
+
 Credits:
 
 Ursprüngliches Konzept, Schaltung und Hardware-Design:
