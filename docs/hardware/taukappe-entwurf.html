@@ -178,7 +178,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     // Taukappe: U-Profil, Mantel, verdickte Vorderkante
     lathe([[111.9,-20],[113.5,-20],[113.5,0],[116.5,0],[116.5,-25],[120.5,-25],[120.5,8],[118.5,13],[118.5,190],[120.5,192],[120.5,200],[114,200],[114,192],[116.5,189],[116.5,3],[111.9,3],[111.9,-20]], mPetg);
     [60,120,165].forEach(z => lathe([[108,z],[116.6,z],[116.6,z+3],[108,z+3],[108,z]], mPetg));
-    for(let i=0;i<8;i++){ const a = (i+0.5)/8*Math.PI*2; cylZ(3, 0.8, mMag, [Math.sin(a)*117.3, Math.cos(a)*117.3, 200.3]); }
+    [120,180,240].forEach(deg => { const a = deg*Math.PI/180; cylZ(3, 0.8, mMag, [Math.sin(a)*117.3, Math.cos(a)*117.3, 200.3]); });
     // Rändelschrauben
     [60,180,300].forEach(deg => {
       const a = deg*Math.PI/180, dir = [Math.sin(a), Math.cos(a)];
@@ -671,7 +671,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     <p class="lbm" style="font-size:13px;color:var(--muted)">Lichtdicht wird es durch die <b>Lippe</b>: Licht müsste zweimal um die Ecke. Die <b>Magnete</b> ziehen den Deckel nur plan an die Kante. In der Kappe sitzen Magnete, im Deckel Stahlscheiben, so kann man die Polung nicht verwechseln. Eingedruckt werden sie mit einer Druckpause, es braucht also keinen Kleber. Zusätzlich halten zwei Magnete im Antriebsblock den geöffneten Deckel in der Parkposition fest.</p>
     <dl class="kv">
       <dt>Warum das zur Firmware passt</dt><dd style="font-family:var(--f-body)">Die Firmware schickt nur 700 ms lang Pulse, danach ist der Servo kraftlos. Ohne Magnete könnte der Deckel bei schräg stehendem Tubus aufklappen. Mit Magneten hält er in beiden Endlagen von selbst.</dd>
-      <dt>Grenze für die Haltekraft</dt><dd style="font-family:var(--f-body)">Jeder Magnet hat zur Achse einen Hebel von 2 bis 26 cm. Damit der DS3218 sicher öffnet, sollten alle Magnete zusammen höchstens etwa 400–500 g Haltekraft haben. Richtwert: 8 × 6 × 2 mm N35 hinter 0,6 mm Deckschicht. Die Haltekraft lässt sich über die Dicke der Deckschicht einstellen, am besten mit einem Testring vorher ausprobieren.</dd>
+      <dt>Wie viele Magnete</dt><dd style="font-family:var(--f-body)">Nur 3 Stück, gegenüber dem Scharnier bei 4, 6 und 8 Uhr. Die Lippe dichtet, die Magnete sollen den Deckel nur sanft plan anziehen. Nahe am Scharnier bringen Magnete nichts, dort hält der Deckelarm. Richtwert: 3 × 6 × 2 mm N35 hinter 0,6 mm Deckschicht, zusammen etwa 150–250 g. Bei einem Hebel von etwa 20 cm braucht der Servo dafür nur rund 4 kg·cm zusätzlich. Eingestellt wird über die Dicke der Deckschicht.</dd>
     </dl>
   </div>
 </section>
@@ -702,7 +702,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
         <tr><td>Kugellager 608 + Achse Ø8 hohl</td><td>Gegenlager, Kabeldurchführung</td></tr>
         <tr><td>Trägerplatte mit EL-Folie + Inverter</td><td>vorhanden, wird weiterverwendet</td></tr>
         <tr><td>Opal-PMMA 2 mm (optional)</td><td>nur bei ungleichmäßigen Flats, Ø<span class="xDiff">228,5</span></td></tr>
-        <tr><td>10× Neodym 6 × 2 mm N35 + 10× Stahlscheibe 6 mm</td><td>8 für den Deckelschluss, 2 für die Parkposition</td></tr>
+        <tr><td>5× Neodym 6 × 2 mm N35 + 5× Stahlscheibe 6 mm</td><td>3 für den Deckelschluss (4/6/8 Uhr), 2 für die Parkposition</td></tr>
         <tr><td>Schrauben passend zu den Bohrungen des weißen Rings</td><td>Rändel- oder Innensechskant, dazu Gewindeeinsätze im Lippen-Boss</td></tr>
         <tr><td>Heizband 12 V (optional)</td><td>an J5, siehe Hinweis Tau</td></tr>
         <tr><td>NTC 10 k (optional)</td><td>an JP2 / A0</td></tr>

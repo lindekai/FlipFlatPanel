@@ -35,9 +35,10 @@ Funktioniert gut und wird übernommen: **EL-Folie auf Trägerplatte geklebt**. D
 5. **Deckel**: gedruckter Rahmen (Ø ≈ Kappe außen + 8 mm) und die vorhandene Trägerplatte mit EL-Folie. Die Platte sitzt herausnehmbar in Klemmnasen oder an M3-Schrauben. Eine Streuscheibe aus Opal-PMMA ist nur optional vorgesehen.
 6. **Lichtdichtung durch Lippe und Magnete**:
    - Eine Lippe am Deckelrand übergreift die Kappenkante und bildet so ein Lichtlabyrinth.
-   - 8 Magnete (Neodym 6 × 2 mm, N35) sitzen in der Kappenkante, eingedruckt mit einer Druckpause unter 0,6 mm Deckschicht. Gegenstücke sind Stahlscheiben im Deckelrahmen.
+   - Nur **3 Magnete** (Neodym 6 × 2 mm, N35) sitzen in der Kappenkante gegenüber dem Scharnier, bei 4, 6 und 8 Uhr (Scharnier bei 12 Uhr). Sie sind eingedruckt mit einer Druckpause unter 0,6 mm Deckschicht. Gegenstücke sind Stahlscheiben im Deckelrahmen.
+   - Die Magnete sollen den Deckel nur sanft plan anziehen, die Lichtdichtheit macht die Lippe. Zusammen ziehen sie ca. 150–250 g, das sind beim Öffnen rund 4 kg·cm zusätzlich für den Servo.
    - 2 weitere Magnete halten den offenen Deckel in der Parkposition. Das ist nötig, weil die Firmware den Servo nach 700 ms stromlos schaltet.
-   - Die Haltekraft aller Magnete zusammen soll ca. 400–500 g nicht überschreiten. Sie wird über die Dicke der Deckschicht mit einem Testring eingestellt.
+   - Die Haltekraft wird über die Dicke der Deckschicht mit einem Testring eingestellt.
 7. **Tau**: Beim Newton beschlägt zuerst der Fangspiegel. Der Heizkanal Q2/J5 der Platine soll einen Heizstreifen am Fangspiegelhalter versorgen, A0 einen Temperaturfühler. Das ist für später, die Firmware bleibt heute unverändert.
 
 Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, Filz mit Rändelschrauben-Klemmung, Lagenaufbau des Deckels mit Diffusor und Schaum.
