@@ -90,7 +90,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 
 <div class="wrap">
 <header>
-  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev G · 25.11.2026</span>
+  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev H · 25.11.2026</span>
   <h1>Taukappe mit FlipFlat-Deckel für den Skywatcher 200/1000 PDS</h1>
   <p class="lead">Konzeptvergleich, Bewegungsstudie und Maßzeichnungen für eine aufsteckbare Taukappe. Deckel mit EL-Folie und Servo sitzen am vorderen Ende, die Elektronik in einem Gehäuse direkt daneben. Alle Maße sind vorläufig und hängen vom gemessenen Tubusdurchmesser ab.</p>
 </header>
@@ -285,13 +285,14 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
   <h2>Ausgangslage</h2>
   <div class="grid2">
     <div class="sheet">
-      <h3>Was die Platine MK3 rev3 schon kann</h3>
+      <h3>Elektronik: neu, passend zum Gehäuse</h3>
       <ul class="list">
-        <li><b>Q1 / J2:</b> EL-Inverter über MOSFET an D9 (PWM), JST-XH.</li>
-        <li><b>Q2 / J5:</b> zweiter MOSFET-Kanal „Heatingfoil“ an D7. Passt für ein Heizband.</li>
-        <li><b>JP2 → A0:</b> freier Analogeingang, z. B. für einen NTC-Temperaturfühler.</li>
-        <li><b>MP2338 Stepdown 12 → 5 V</b> für den Servo, 1000 µF Puffer am Servo-Header.</li>
-        <li>Platine 60,8 × 52,9 mm (aus Gerber), 4 Befestigungslöcher Ø 3,5 im Raster 56 × 48. Links DC-Buchse und USB-C, rechts Servo, A0 und EL. Die Buchse für die Heizfolie (J5) sitzt auf der Unterseite an der oberen Kante.</li>
+        <li>Die Platine richtet sich nach dem Gehäuse, nicht umgekehrt. Die Nano-Platine MK3 wird nicht übernommen.</li>
+        <li><b>ESP32-S3-MINI</b> mit ASCOM Alpaca über WLAN, Grundlage ist der Entwurf im Repo <code>FlipFlatPanel-ESP32</code>. USB-C nur für Service und Flashen.</li>
+        <li><b>2 MOSFET-Kanäle</b> für EL-Inverter (PWM) und Fangspiegelheizung, <b>BME280</b> für Taupunkt-Regelung.</li>
+        <li><b>2 Hall-Sensoren</b> als echte Endlagen. Die Magnete dafür sitzen ohnehin im Deckel.</li>
+        <li><b>Spannungswandler 12 → 6 V, mindestens 3 A</b> für den PWM-Servo.</li>
+        <li>Im Betrieb führt nur ein Kabel zur Kappe: 12 V.</li>
       </ul>
     </div>
     <div class="sheet">
@@ -317,7 +318,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     <tbody>
       <tr><td>Box und Scharnier mit Kabelbindern am Tubus</td><td>nicht wiederholgenau, verrutscht</td><td><b>Randklemmung mit U-Profil</b> (Prinzip wie bei der Strato-Taukappe): Die Kappe wird auf den Tubusrand gesteckt, die Innenlippe zentriert sie. Geschraubt wird durch die vorhandenen Bohrungen des weißen Frontrings. Der Ring wird abgebaut, das spart Gewicht. Die Box wird auf eine angeformte Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert. Abnehmen ohne Werkzeug.</td></tr>
       <tr><td>Servo treibt über Hebel und Schubstange</td><td>Spiel, Winkel begrenzt, Deckel drückt nicht sauber an</td><td><b>Direktantrieb:</b> Die Servowelle ist die Deckelachse (geklemmtes Alu-Servohorn 25T), gegenüber sitzt ein 608-Kugellager. Keine Gelenke, 270° Schwenkbereich.</td></tr>
-      <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (≈ 165 × 70 × 32 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, Platine und Inverter auf und ragt nur etwa 32 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
+      <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (≈ 130 × 66 × 24 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, eine eigene, auf den Block zugeschnittene Platine (ESP32, Alpaca) und den Inverter auf und ragt nur etwa 24 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
       <tr><td>Deckel direkt an der Tubusöffnung</td><td>kein Tauschutz</td><td>Der Deckel sitzt an der Vorderkante einer 200 mm langen Kappe. Die vorhandene Trägerplatte mit aufgeklebter EL-Folie wird übernommen, der neue Deckelrahmen wird um sie herum konstruiert.</td></tr>
     </tbody>
   </table></div>
@@ -450,7 +451,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <rect class="hid" x="478" y="106" width="34" height="18"/><text class="lbm" x="481" y="119">Inv.</text>
       <rect class="hid" x="515" y="104" width="40" height="20"/>
       <circle class="f-acc" cx="557" cy="112" r="4.5"/>
-      <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock ≈ 165 × 70 × 32</text>
+      <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock ≈ 130 × 66 × 24</text>
       <path class="lead-l" d="M562 104 L590 84"/><text class="lb" x="593" y="82">Servo direkt</text><text class="lbm" x="593" y="95">auf der Deckelachse</text>
       <!-- Deckel geschlossen -->
       <g>
@@ -479,7 +480,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <text class="dt" transform="translate(650 290) rotate(-90)">Ø<tspan id="sLid">246,5</tspan> Deckel</text>
       <g class="dl"><line x1="395" y1="101" x2="408" y2="101"/><line x1="395" y1="129" x2="408" y2="129"/></g>
       <line class="dl" x1="400" y1="101" x2="400" y2="129" marker-start="url(#ar)" marker-end="url(#ar)"/>
-      <text class="dt" x="378" y="119">32</text>
+      <text class="dt" x="378" y="119">24</text>
     </svg>
     </div>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird nur etwa 25 mm weit auf den Tubusrand gesteckt (Detail A). Damit bleiben die Spinnenschrauben voraussichtlich frei. Das muss aber gemessen werden: Die Innenlippe darf innen nicht bis an die Befestigung der Spinne reichen. Die Blendenringe innen verringern Streulicht an der Kappenwand.</p>
@@ -586,26 +587,33 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
   </div>
 
   <div class="sheet">
-    <div class="sheet-head"><h3>Blatt 4 · Antriebsblock, radial von außen</h3><span class="code">FFP-TK-004 · ≈ 165 × 70 × 32</span></div>
-    <svg viewBox="30 60 470 250" role="img" aria-label="Antriebsblock von außen mit Platine, Inverter, Servo und Lager">
-      <rect class="f-sheet" x="100" y="100" width="310" height="140" rx="6"/>
-      <line class="hid" x1="340" y1="72" x2="340" y2="270"/>
-      <rect class="hid" x="120" y="120" width="110" height="96"/><text class="lb" x="132" y="172">PCB 60,8 × 52,9</text>
-      <rect class="hid" x="236" y="130" width="68" height="70"/><text class="lbm" x="242" y="162">EL-</text><text class="lbm" x="242" y="176">Inverter</text>
-      <rect class="hid" x="312" y="130" width="78" height="81"/><text class="lbm" x="318" y="166">Servo</text><text class="lbm" x="318" y="180">DS3218</text>
-      <line class="ctr" x1="394" y1="70" x2="394" y2="272"/>
-      <rect x="382" y="82" width="24" height="14" fill="var(--lid)"/><rect x="382" y="244" width="24" height="14" fill="var(--lid)"/>
-      <circle cx="394" cy="226" r="10" fill="none" stroke="var(--ink)"/><circle cx="394" cy="226" r="4" fill="var(--accent)"/>
-      <rect x="88" y="128" width="14" height="24" fill="var(--ink)"/><rect x="90" y="184" width="12" height="20" rx="3" fill="var(--muted)"/>
-      <text class="lb" x="34" y="144">12 V DC</text><text class="lb" x="34" y="198">USB-C</text>
-      <rect x="160" y="238" width="26" height="12" fill="var(--ink)"/>
-      <text class="lbm" x="110" y="266">Kabelverschraubung: Heizung + Fühler</text>
-      <text class="lbm" x="300" y="290">Kappenvorderkante</text>
-      <text class="lbm" x="412" y="80">Deckelarm</text>
-      <text class="lbm" x="412" y="230">608-Lager</text><text class="lbm" x="412" y="244">Achse hohl</text>
-      <text class="lbm" x="100" y="92">← hinten (Okularseite)</text><text class="lbm" x="290" y="92">vorne →</text>
+    <div class="sheet-head"><h3>Blatt 4 · Antriebsblock mit eigener Platine</h3><span class="code">FFP-TK-004 · ≈ 130 × 66 × 24 · vorläufig</span></div>
+    <svg viewBox="20 64 480 246" role="img" aria-label="Antriebsblock von außen mit eigener Platine, Inverter, Servo, Hall-Sensoren und Lager">
+      <rect class="f-sheet" x="100" y="100" width="312" height="158" rx="6"/>
+      <line class="hid" x1="328" y1="74" x2="328" y2="282"/>
+      <rect class="hid" x="110" y="110" width="163" height="67"/>
+      <rect x="128" y="119" width="36" height="48" fill="none" stroke="var(--dim)" stroke-width="1"/><text class="lbm" x="131" y="146">ESP32</text>
+      <rect x="172" y="122" width="30" height="40" fill="none" stroke="var(--dim)" stroke-width="1"/><text class="lbm" x="174" y="146">6 V</text>
+      <rect x="208" y="122" width="30" height="40" fill="none" stroke="var(--dim)" stroke-width="1"/><text class="lbm" x="210" y="146">FET</text>
+      <rect x="110" y="128" width="12" height="14" class="f-acc"/>
+      <rect x="250" y="134" width="10" height="10" fill="var(--warn)"/><text class="lbm" x="240" y="128">Hall AUF</text>
+      <rect class="hid" x="110" y="184" width="120" height="66"/><text class="lbm" x="140" y="214">EL-Inverter</text><text class="lbm" x="140" y="228">(Maß offen)</text>
+      <rect class="hid" x="302" y="119" width="96" height="97"/><text class="lbm" x="312" y="164">Servo DS3218</text><text class="lbm" x="312" y="178">270°, PWM</text>
+      <rect x="340" y="230" width="10" height="10" fill="var(--warn)"/><text class="lbm" x="300" y="252">Hall ZU</text>
+      <line class="ctr" x1="383" y1="76" x2="383" y2="282"/>
+      <rect x="371" y="82" width="24" height="14" fill="var(--lid)"/><rect x="371" y="262" width="24" height="14" fill="var(--lid)"/>
+      <circle cx="383" cy="244" r="9" fill="none" stroke="var(--ink)"/><circle cx="383" cy="244" r="3.5" fill="var(--accent)"/>
+      <rect x="88" y="190" width="14" height="22" fill="var(--ink)"/><rect x="90" y="222" width="12" height="16" rx="3" fill="var(--muted)"/>
+      <g stroke="var(--ink)" stroke-width="1.5"><line x1="100" y1="126" x2="100" y2="144"/></g>
+      <text class="lb" x="24" y="140">BME280</text><text class="lbm" x="24" y="153">an Lüftung</text>
+      <text class="lb" x="24" y="205">12 V</text><text class="lbm" x="24" y="234">USB-C</text>
+      <rect x="250" y="256" width="24" height="10" fill="var(--ink)"/><text class="lbm" x="200" y="282">Heizung Fangspiegel</text>
+      <text class="lbm" x="300" y="300">Kappenvorderkante</text>
+      <text class="lbm" x="400" y="80">Deckelarm</text>
+      <text class="lbm" x="400" y="248">608-Lager</text>
+      <text class="lbm" x="100" y="92">← hinten (Okularseite)</text><text class="lbm" x="270" y="92">vorne →</text>
     </svg>
-    <p class="lbm" style="font-size:13px;color:var(--muted)">Das EL-Kabel läuft durch die hohle Achse auf der Lagerseite. So wickelt es sich beim Öffnen nicht auf. Achtung: Hinter dem Inverter liegt Wechselspannung von etwa 100 V. Die Leitung muss isoliert sein und gegen Knicken gesichert werden.</p>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Platine ist schmal (ca. 72 × 28 mm) und liegt neben dem Inverter, der Servo sitzt vorne quer. Die Blockhöhe von etwa 24 mm ergibt sich aus Servo und Inverter, die Platine selbst ist mit reiner SMD-Bestückung flach. Die Hall-Sensoren nutzen die Magnete, die ohnehin da sind: „ZU“ spricht auf einen Magneten im Deckelarm an, „AUF“ auf den Parkmagneten im Deckel. Der BME280 sitzt hinten an einer Lüftungsöffnung, damit er Außenluft misst und nicht die Wärme von Inverter und Spannungswandler. Das EL-Kabel läuft durch die hohle Achse auf der Lagerseite. So wickelt es sich beim Öffnen nicht auf. Achtung: Hinter dem Inverter liegt Wechselspannung von etwa 100 V. Die Leitung muss isoliert sein und gegen Knicken gesichert werden.</p>
   </div>
 </section>
 
@@ -670,7 +678,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     </div>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Lichtdicht wird es durch die <b>Lippe</b>: Licht müsste zweimal um die Ecke. Die <b>Magnete</b> ziehen den Deckel nur plan an die Kante. In der Kappe sitzen Magnete, im Deckel Stahlscheiben, so kann man die Polung nicht verwechseln. Eingedruckt werden sie mit einer Druckpause, es braucht also keinen Kleber. Zusätzlich halten zwei Magnete im Antriebsblock den geöffneten Deckel in der Parkposition fest.</p>
     <dl class="kv">
-      <dt>Warum das zur Firmware passt</dt><dd style="font-family:var(--f-body)">Die Firmware schickt nur 700 ms lang Pulse, danach ist der Servo kraftlos. Ohne Magnete könnte der Deckel bei schräg stehendem Tubus aufklappen. Mit Magneten hält er in beiden Endlagen von selbst.</dd>
+      <dt>Warum das zur Firmware passt</dt><dd style="font-family:var(--f-body)">Der Servo wird nach der Fahrt stromlos geschaltet. Ohne Magnete könnte der Deckel bei schräg stehendem Tubus aufklappen. Mit Magneten hält er in beiden Endlagen von selbst, und dieselben Magnete lösen die Hall-Endlagen aus.</dd>
       <dt>Wie viele Magnete</dt><dd style="font-family:var(--f-body)">Nur 3 Stück, gegenüber dem Scharnier bei 4, 6 und 8 Uhr. Die Lippe dichtet, die Magnete sollen den Deckel nur sanft plan anziehen. Nahe am Scharnier bringen Magnete nichts, dort hält der Deckelarm. Richtwert: 3 × 6 × 2 mm N35 hinter 0,6 mm Deckschicht, zusammen etwa 150–250 g. Bei einem Hebel von etwa 20 cm braucht der Servo dafür nur rund 4 kg·cm zusätzlich. Eingestellt wird über die Dicke der Deckschicht.</dd>
     </dl>
   </div>
@@ -687,7 +695,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
         <tr><td>Frontring mit Box-Sattel</td><td class="n"><span class="xOD">238,5</span> × 110</td><td class="ok bedA">passt</td></tr>
         <tr><td>Deckelschale</td><td class="n">Ø<span class="xLid">246,5</span> × 14</td><td class="ok" id="bedLid">passt</td></tr>
         <tr><td>Haltering Deckel</td><td class="n">Ø<span class="xLid">246,5</span> × 4</td><td class="ok" id="bedLid2">passt</td></tr>
-        <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">≈ 165 × 70 × 32</td><td class="ok">passt</td></tr>
+        <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">≈ 130 × 66 × 24</td><td class="ok">passt</td></tr>
         <tr><td>Deckelarme (gekröpft), Lagerdeckel</td><td class="n">klein</td><td class="ok">passt</td></tr>
       </tbody>
     </table></div>
@@ -698,6 +706,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     <div class="tbl"><table>
       <thead><tr><th>Teil</th><th>Hinweis</th></tr></thead>
       <tbody>
+        <tr><td>Eigene Platine: ESP32-S3-MINI, BME280, 2× Hall, 2× MOSFET, Wandler 12 → 6 V ≥ 3 A</td><td>wird auf den Block zugeschnitten, Firmware-Basis FlipFlatPanel-ESP32</td></tr>
         <tr><td>Servo DS3218 (270°)</td><td>20 kg·cm. Bedarf statisch ca. 4 kg·cm (Deckel ≈ 300 g, Hebel ≈ 14 cm)</td></tr>
         <tr><td>Kugellager 608 + Achse Ø8 hohl</td><td>Gegenlager, Kabeldurchführung</td></tr>
         <tr><td>Trägerplatte mit EL-Folie + Inverter</td><td>vorhanden, wird weiterverwendet</td></tr>
@@ -705,8 +714,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
         <tr><td>5× Neodym 6 × 2 mm N35 + 5× Stahlscheibe 6 mm</td><td>3 für den Deckelschluss (4/6/8 Uhr), 2 für die Parkposition</td></tr>
         <tr><td>Schrauben passend zu den Bohrungen des weißen Rings</td><td>Rändel- oder Innensechskant, dazu Gewindeeinsätze im Lippen-Boss</td></tr>
         <tr><td>Heizband 12 V (optional)</td><td>an J5, siehe Hinweis Tau</td></tr>
-        <tr><td>NTC 10 k (optional)</td><td>an JP2 / A0</td></tr>
-      </tbody>
+              </tbody>
     </table></div>
   </div>
 </section>
@@ -714,12 +722,12 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 <section class="grid2">
   <div class="sheet">
     <h3>Hinweis zum Tau am Newton</h3>
-    <p style="font-size:14px">Beim Newton beschlägt fast immer zuerst der <b>Fangspiegel</b>. Die Taukappe schützt ihn passiv, indem sie die Abstrahlung zum Himmel verringert. Ein Heizband in der Kappe wärmt dagegen nur die Kappe selbst. Der Heizkanal Q2/J5 wirkt deshalb besser an einem kleinen Heizstreifen hinten am Fangspiegelhalter. Das Kabel läuft an einer Spinnenstrebe entlang und durch die M12-Verschraubung der Box. Mit dem NTC an A0 kann die Firmware später nach dem Taupunkt regeln.</p>
+    <p style="font-size:14px">Beim Newton beschlägt fast immer zuerst der <b>Fangspiegel</b>. Die Taukappe schützt ihn passiv, indem sie die Abstrahlung zum Himmel verringert. Ein Heizband in der Kappe wärmt dagegen nur die Kappe selbst. Der Heizkanal der neuen Platine wirkt deshalb besser an einem kleinen Heizstreifen hinten am Fangspiegelhalter. Das Kabel läuft an einer Spinnenstrebe entlang zum Antriebsblock. Geregelt wird nach dem Taupunkt aus dem BME280.</p>
   </div>
   <div class="sheet">
     <h3>Elektrik prüfen, bevor gedruckt wird</h3>
     <ul class="list" style="font-size:14px">
-      <li>Ein DS3218 zieht beim Blockieren bis zu ca. 2,5 A. Prüfen, ob der MP2338-Stepdown diesen Spitzenstrom liefert. Die Platine ist laut Repo noch ungetestet.</li>
+      <li>Ein DS3218 zieht beim Blockieren bis zu ca. 2,5 A. Der 6-V-Wandler der neuen Platine muss diesen Spitzenstrom sicher liefern (mindestens 3 A).</li>
       <li>Der Deckel ist ein Hebel: Ein langsames Anfahren (SoftClose) schont Getriebe und Spinne.</li>
       <li>Etwa 1 kg zusätzlich vorne am Tubus, abzüglich des weißen Rings. Den Tubus in den Rohrschellen nach vorn schieben oder hinten ein Gegengewicht anbringen.</li>
     </ul>
@@ -740,7 +748,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <li>Abstand Vorderkante zum Fangspiegel (für Streulicht und Kappenlänge).</li>
       <li>Wo der Antriebsblock am Umfang sitzen soll, Standard 12 Uhr (Sucher, Prismenschiene, Kabelführung, Balance).</li>
       <li>Trägerplatte: Ø, Dicke und Material. Dazu Ø der Leuchtfläche der EL-Folie, Lage und Höhe ihres Anschlusses und das Gewicht der Platte mit Folie. Außerdem die Maße des EL-Inverters (L × B × H), wo seine Kabel herauskommen und wie er befestigt ist.</li>
-      <li>Platine bestückt: Steckt der Nano gelötet oder in Buchsenleisten? Größte Höhe über der Oberseite und unter der Unterseite (J5)?</li>
+      <li>Höhe des EL-Inverters: Sie bestimmt zusammen mit dem Servo die Blockhöhe.</li>
       <li>Welcher Servo ist heute verbaut (Typ, Drehwinkel)? Welcher Temperaturfühler steckt im Metallstift?</li>
     </ol>
   </div>
