@@ -90,7 +90,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 
 <div class="wrap">
 <header>
-  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev I · 25.11.2026</span>
+  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev J · 25.11.2026</span>
   <h1>Taukappe mit FlipFlat-Deckel für den Skywatcher 200/1000 PDS</h1>
   <p class="lead">Konzeptvergleich, Bewegungsstudie und Maßzeichnungen für eine aufsteckbare Taukappe. Deckel mit EL-Folie und Servo sitzen am vorderen Ende, die Elektronik in einem Gehäuse direkt daneben. Alle Maße sind vorläufig und hängen vom gemessenen Tubusdurchmesser ab.</p>
 </header>
@@ -108,7 +108,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <button id="aFlat" type="button">Flat an</button>
       <button id="aCut" type="button">Schnittansicht</button>
     </div>
-    <p class="lbm" style="font-size:13px;color:var(--muted)">Ziehen dreht die Ansicht, Scrollen oder zwei Finger zoomen. Ablauf der Schleife: Deckel zu, EL-Folie leuchtet für die Flats, Servo öffnet weich um 270°, Parkposition auf dem Antriebsblock, schließen. Die Schnittansicht zeigt das U-Profil am Tubusrand, die Blendenringe und das Licht der EL-Folie im Tubus. Die Servozeit von etwa 2,8 s entspricht Geschwindigkeit 6 mit SoftClose. Ohne SoftClose schafft ein DS3218 die 270° in unter einer Sekunde.</p>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Ziehen dreht die Ansicht, Scrollen oder zwei Finger zoomen. Ablauf der Schleife: Deckel zu, EL-Folie leuchtet für die Flats, Servo öffnet weich um 270°, Parkposition auf dem Antriebsblock, schließen. Die Schnittansicht zeigt das U-Profil am Tubusrand, die feinen Rillen innen und das Licht der EL-Folie im Tubus. Die Servozeit von etwa 2,8 s entspricht Geschwindigkeit 6 mit SoftClose. Ohne SoftClose schafft ein DS3218 die 270° in unter einer Sekunde.</p>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -119,7 +119,6 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     let renderer;
     try { renderer = new THREE.WebGLRenderer({antialias:true}); } catch(e){ hud.textContent = 'WebGL ist in diesem Browser nicht verfügbar.'; return; }
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-    renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.localClippingEnabled = true;
     renderer.domElement.style.display = 'block';
     box.appendChild(renderer.domElement);
@@ -136,14 +135,14 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     const ctl = new THREE.OrbitControls(cam, renderer.domElement);
     ctl.target.set(0, 30, 40); ctl.enableDamping = true; ctl.minDistance = 300; ctl.maxDistance = 2200; ctl.update();
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3f46, 0.8));
-    const sun = new THREE.DirectionalLight(0xffffff, 0.95); sun.position.set(-500, 700, 600); scene.add(sun);
-    const rim = new THREE.DirectionalLight(0xffffff, 0.4); rim.position.set(600, 200, -400); scene.add(rim);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3f46, 1.0));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.25); sun.position.set(-500, 700, 600); scene.add(sun);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.6); rim.position.set(600, 200, -400); scene.add(rim);
     const elLight = new THREE.PointLight(0xe6f2ff, 0, 900, 1.6); elLight.position.set(0, 0, 180); scene.add(elLight);
 
     const mats = [];
     const M = (c, r, m, o) => { const x = new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:r, metalness:m, side:THREE.DoubleSide}, o||{})); mats.push(x); return x; };
-    const mTube = M(0x16171b, 0.38, 0.55), mPetg = M(0x2b3035, 0.85, 0.05), mDark = M(0x0b0c0e, 0.95, 0.0),
+    const mTube = M(0x16171b, 0.38, 0.55), mPetg = M(0x3a4047, 0.8, 0.05), mDark = M(0x0b0c0e, 0.95, 0.0),
           mAlu = M(0xbfc4ca, 0.3, 0.9), mMirror = M(0x9aa3ad, 0.12, 1.0), mBlack = M(0x111214, 0.6, 0.1),
           mEL = M(0xd9a99a, 0.6, 0.0, {emissive:0xeaf4ff, emissiveIntensity:0}), mMag = M(0xd5d9dd, 0.25, 1.0);
 
@@ -177,7 +176,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 
     // Taukappe: U-Profil, Mantel, verdickte Vorderkante
     lathe([[111.9,-20],[113.5,-20],[113.5,0],[116.5,0],[116.5,-25],[120.5,-25],[120.5,8],[118.5,13],[118.5,190],[120.5,192],[120.5,200],[114,200],[114,192],[116.5,189],[116.5,3],[111.9,3],[111.9,-20]], mPetg);
-    [60,120,165].forEach(z => lathe([[108,z],[116.6,z],[116.6,z+3],[108,z+3],[108,z]], mPetg));
+    for (let z = 28; z < 186; z += 3) lathe([[116.6,z],[115.7,z+0.9],[115.7,z+1.1],[116.6,z+1.1],[116.6,z]], mPetg); // feine Rillen (Sägezahn)
     [120,180,240].forEach(deg => { const a = deg*Math.PI/180; cylZ(3, 0.8, mMag, [Math.sin(a)*117.3, Math.cos(a)*117.3, 200.3]); });
     // Rändelschrauben
     [60,180,300].forEach(deg => {
@@ -337,15 +336,13 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <svg viewBox="0 0 300 150" role="img" aria-label="Seitenansicht Konzept A">
         <path class="f-tube" d="M110 35 H14 c-5 14 5 26 0 40 c-5 14 5 26 0 40 H110 Z"/>
         <rect class="f-cap" x="95" y="31" width="155" height="4"/><rect class="f-cap" x="95" y="115" width="155" height="4"/>
-        <line class="thin" x1="133" y1="27" x2="133" y2="39"/><line class="thin" x1="183" y1="27" x2="183" y2="39"/>
-        <line class="thin" x1="133" y1="111" x2="133" y2="123"/><line class="thin" x1="183" y1="111" x2="183" y2="123"/>
-        <rect class="f-sheet" x="198" y="16" width="52" height="15" rx="2"/>
+                <rect class="f-sheet" x="198" y="16" width="52" height="15" rx="2"/>
         <rect class="f-lid" x="251" y="29" width="7" height="92" rx="1"/>
         <circle class="f-acc" cx="256" cy="12" r="3"/><line class="ln" x1="256" y1="12" x2="254" y2="29"/>
-        <text class="lbm" x="96" y="140">3 Ringsegmente · 225 mm · ca. 0,95 kg</text>
+        <text class="lbm" x="96" y="140">ein Druckteil · 225 mm · ca. 0,9 kg</text>
       </svg>
       <div class="pc">
-        <div><b>Pro</b><ul><li>Nur Drucker und Normteile nötig</li><li>Innen Blendenringe gegen Streulicht</li><li>Gut nachbaubar fürs Repo</li></ul></div>
+        <div><b>Pro</b><ul><li>Nur Drucker und Normteile nötig</li><li>Innen feine Rillen gegen Streulicht</li><li>Gut nachbaubar fürs Repo</li></ul></div>
         <div><b>Contra</b><ul><li>Schwerstes Konzept</li><li>Lange Druckzeit (ca. 30 h)</li></ul></div>
       </div>
     </article>
@@ -384,7 +381,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       </div>
     </article>
   </div>
-  <p class="note">Warum A: Der Entwurf landet als Open-Source-Projekt im Repo. Teile, die man ohne Zukauf von Plattenmaterial drucken kann, lassen sich am leichtesten nachbauen. Die Segmentschnittstelle ist so ausgelegt, dass man den Mittelring später gegen einen Mantel nach B tauschen kann.</p>
+  <p class="note">Warum A: Der Entwurf landet als Open-Source-Projekt im Repo. Teile, die man ohne Zukauf von Plattenmaterial drucken kann, lassen sich am leichtesten nachbauen. Die Kappe ist ein einziges Druckteil (225 mm Bauhöhe, passt auf 256 mm). Für kleinere Drucker lässt sie sich im CAD-Modell in Segmente teilen.</p>
 </section>
 
 <section>
@@ -431,20 +428,18 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <path class="lead-l" d="M300 127 L262 98"/><text class="lb" x="150" y="94">Spinnenschraube (Lage messen!)</text>
       <!-- Strahlengang -->
       <line class="ray" x1="330" y1="150" x2="528" y2="150"/><line class="ray" x1="330" y1="350" x2="528" y2="350"/>
-      <text class="lbm" x="350" y="164" fill="var(--accent)">Strahlengang Ø200</text>
+      <text class="lbm" x="336" y="196" fill="var(--accent)">Strahlengang Ø200</text>
       <!-- Kappe -->
       <rect class="f-cap" x="305" y="129" width="225" height="4"/>
       <rect class="f-cap" x="305" y="367" width="225" height="4"/>
       <g class="f-cap"><rect x="310" y="136" width="23" height="3"/><rect x="310" y="361" width="23" height="3"/><rect x="330" y="129" width="3" height="10"/><rect x="330" y="361" width="3" height="10"/></g>
       <circle cx="330" cy="134" r="11" fill="none" stroke="var(--accent)" stroke-width=".9"/><text class="lb" x="344" y="122" fill="var(--accent)">A</text>
       <g class="f-cap">
-        <rect x="375" y="133" width="3" height="10"/><rect x="440" y="133" width="3" height="10"/><rect x="495" y="133" width="3" height="10"/>
-        <rect x="375" y="357" width="3" height="10"/><rect x="440" y="357" width="3" height="10"/><rect x="495" y="357" width="3" height="10"/>
         <rect x="526" y="133" width="4" height="7"/><rect x="526" y="360" width="4" height="7"/>
       </g>
-      <g class="thin"><line x1="340" y1="124" x2="340" y2="138"/><line x1="420" y1="124" x2="420" y2="138"/><line x1="340" y1="362" x2="340" y2="376"/><line x1="420" y1="362" x2="420" y2="376"/></g>
-      <text class="lbm" x="300" y="345">Klemm 35</text><text class="lbm" x="356" y="345">Mittel 80</text><text class="lbm" x="452" y="345">Front 110</text>
-      <path class="lead-l" d="M441 143 L470 196"/><text class="lb" x="452" y="210">Blendenringe</text>
+      <path d="M335 133 L337 134.6 L337 133 L338 133 L340 134.6 L340 133 L341 133 L343 134.6 L343 133 L344 133 L346 134.6 L346 133 L347 133 L349 134.6 L349 133 L350 133 L352 134.6 L352 133 L353 133 L355 134.6 L355 133 L356 133 L358 134.6 L358 133 L359 133 L361 134.6 L361 133 L362 133 L364 134.6 L364 133 L365 133 L367 134.6 L367 133 L368 133 L370 134.6 L370 133 L371 133 L373 134.6 L373 133 L374 133 L376 134.6 L376 133 L377 133 L379 134.6 L379 133 L380 133 L382 134.6 L382 133 L383 133 L385 134.6 L385 133 L386 133 L388 134.6 L388 133 L389 133 L391 134.6 L391 133 L392 133 L394 134.6 L394 133 L395 133 L397 134.6 L397 133 L398 133 L400 134.6 L400 133 L401 133 L403 134.6 L403 133 L404 133 L406 134.6 L406 133 L407 133 L409 134.6 L409 133 L410 133 L412 134.6 L412 133 L413 133 L415 134.6 L415 133 L416 133 L418 134.6 L418 133 L419 133 L421 134.6 L421 133 L422 133 L424 134.6 L424 133 L425 133 L427 134.6 L427 133 L428 133 L430 134.6 L430 133 L431 133 L433 134.6 L433 133 L434 133 L436 134.6 L436 133 L437 133 L439 134.6 L439 133 L440 133 L442 134.6 L442 133 L443 133 L445 134.6 L445 133 L446 133 L448 134.6 L448 133 L449 133 L451 134.6 L451 133 L452 133 L454 134.6 L454 133 L455 133 L457 134.6 L457 133 L458 133 L460 134.6 L460 133 L461 133 L463 134.6 L463 133 L464 133 L466 134.6 L466 133 L467 133 L469 134.6 L469 133 L470 133 L472 134.6 L472 133 L473 133 L475 134.6 L475 133 L476 133 L478 134.6 L478 133 L479 133 L481 134.6 L481 133 L482 133 L484 134.6 L484 133 L485 133 L487 134.6 L487 133 L488 133 L490 134.6 L490 133 L491 133 L493 134.6 L493 133 L494 133 L496 134.6 L496 133 L497 133 L499 134.6 L499 133 L500 133 L502 134.6 L502 133 L503 133 L505 134.6 L505 133 L506 133 L508 134.6 L508 133 L509 133 L511 134.6 L511 133 L512 133 L514 134.6 L514 133 L515 133 L517 134.6 L517 133 L518 133 L520 134.6 L520 133 L521 133 L523 134.6 L523 133 L524 133" fill="none" stroke="var(--cap)" stroke-width=".8"/><path d="M335 367 L337 365.4 L337 367 L338 367 L340 365.4 L340 367 L341 367 L343 365.4 L343 367 L344 367 L346 365.4 L346 367 L347 367 L349 365.4 L349 367 L350 367 L352 365.4 L352 367 L353 367 L355 365.4 L355 367 L356 367 L358 365.4 L358 367 L359 367 L361 365.4 L361 367 L362 367 L364 365.4 L364 367 L365 367 L367 365.4 L367 367 L368 367 L370 365.4 L370 367 L371 367 L373 365.4 L373 367 L374 367 L376 365.4 L376 367 L377 367 L379 365.4 L379 367 L380 367 L382 365.4 L382 367 L383 367 L385 365.4 L385 367 L386 367 L388 365.4 L388 367 L389 367 L391 365.4 L391 367 L392 367 L394 365.4 L394 367 L395 367 L397 365.4 L397 367 L398 367 L400 365.4 L400 367 L401 367 L403 365.4 L403 367 L404 367 L406 365.4 L406 367 L407 367 L409 365.4 L409 367 L410 367 L412 365.4 L412 367 L413 367 L415 365.4 L415 367 L416 367 L418 365.4 L418 367 L419 367 L421 365.4 L421 367 L422 367 L424 365.4 L424 367 L425 367 L427 365.4 L427 367 L428 367 L430 365.4 L430 367 L431 367 L433 365.4 L433 367 L434 367 L436 365.4 L436 367 L437 367 L439 365.4 L439 367 L440 367 L442 365.4 L442 367 L443 367 L445 365.4 L445 367 L446 367 L448 365.4 L448 367 L449 367 L451 365.4 L451 367 L452 367 L454 365.4 L454 367 L455 367 L457 365.4 L457 367 L458 367 L460 365.4 L460 367 L461 367 L463 365.4 L463 367 L464 367 L466 365.4 L466 367 L467 367 L469 365.4 L469 367 L470 367 L472 365.4 L472 367 L473 367 L475 365.4 L475 367 L476 367 L478 365.4 L478 367 L479 367 L481 365.4 L481 367 L482 367 L484 365.4 L484 367 L485 367 L487 365.4 L487 367 L488 367 L490 365.4 L490 367 L491 367 L493 365.4 L493 367 L494 367 L496 365.4 L496 367 L497 367 L499 365.4 L499 367 L500 367 L502 365.4 L502 367 L503 367 L505 365.4 L505 367 L506 367 L508 365.4 L508 367 L509 367 L511 365.4 L511 367 L512 367 L514 365.4 L514 367 L515 367 L517 365.4 L517 367 L518 367 L520 365.4 L520 367 L521 367 L523 365.4 L523 367 L524 367" fill="none" stroke="var(--cap)" stroke-width=".8"/>
+      <text class="lbm" x="356" y="345">ein Druckteil, 225 mm</text>
+      <path class="lead-l" d="M441 136 L470 196"/><text class="lb" x="452" y="210">Feine Rillen innen</text>
       <!-- Klemmschraube unten -->
       <rect class="f-acc" x="313" y="371" width="10" height="10" rx="2"/>
       <path class="lead-l" d="M313 380 L240 395"/><text class="lb" x="80" y="399">Schrauben in vorh. Bohrungen</text>
@@ -489,12 +484,9 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <text class="dt" transform="translate(600 290) rotate(-90)">Ø<tspan id="sOD">238,5</tspan> Kappe</text>
       <line class="dl" x1="655" y1="126" x2="655" y2="374" marker-start="url(#ar)" marker-end="url(#ar)"/>
       <text class="dt" transform="translate(650 290) rotate(-90)">Ø<tspan id="sLid">246,5</tspan> Deckel</text>
-      <g class="dl"><line x1="395" y1="101" x2="408" y2="101"/><line x1="395" y1="129" x2="408" y2="129"/></g>
-      <line class="dl" x1="400" y1="101" x2="400" y2="129" marker-start="url(#ar)" marker-end="url(#ar)"/>
-      <text class="dt" x="378" y="119">24</text>
     </svg>
     </div>
-    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird nur etwa 25 mm weit auf den Tubusrand gesteckt (Detail A). Damit bleiben die Spinnenschrauben voraussichtlich frei. Das muss aber gemessen werden: Die Innenlippe darf innen nicht bis an die Befestigung der Spinne reichen. Die Blendenringe innen verringern Streulicht an der Kappenwand.</p>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird nur etwa 25 mm weit auf den Tubusrand gesteckt (Detail A). Damit bleiben die Spinnenschrauben voraussichtlich frei. Das muss aber gemessen werden: Die Innenlippe darf innen nicht bis an die Befestigung der Spinne reichen. Feine Rillen innen (Sägezahn, 0,8 mm hoch, Teilung 3 mm) brechen flach einfallendes Licht an der Kappenwand.</p>
   </div>
 </section>
 
@@ -522,7 +514,6 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <rect x="262" y="140" width="8" height="88" fill="var(--ink)"/>
       <path class="lead-l" d="M280 230 L250 280"/><text class="lb" x="160" y="292">Gewindeeinsatz im Lippen-Boss</text>
       <!-- Blende/Mantel-Hinweis -->
-      <line class="ctr" x1="160" y1="290" x2="700" y2="290"/>
       <!-- Labels -->
       <path class="lead-l" d="M560 197 L560 226"/><text class="lb" x="470" y="240">Mantel 2,0 mm → zur Taukappe</text>
       <path class="lead-l" d="M336 192 L380 150"/><text class="lb" x="383" y="146">Anschlagschulter am Tubusrand</text>
@@ -530,9 +521,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <path class="lead-l" d="M220 191 L190 160"/><text class="lb" x="152" y="154">Außenschürze</text>
       <path class="lead-l" d="M280 134 L330 120"/><text class="lb" x="333" y="118">Schraube durch vorhandene Bohrung im Tubus</text>
       <!-- Bemaßung Nut -->
-      <line class="dl" x1="355" y1="197" x2="400" y2="197"/><line class="dl" x1="345" y1="208" x2="400" y2="208"/>
-      <line class="dl" x1="395" y1="197" x2="395" y2="208"/>
-      <text class="dt" x="403" y="206">Nut t + 0,75</text>
+      <path class="lead-l" d="M214 201 L200 234"/><text class="dt" x="160" y="246">Nut = t + 0,75</text>
     </svg>
     </div>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Der weiße Frontring wird abgebaut. Die Kappe nutzt seine vorhandenen Bohrungen im Tubus: Die Schraube geht durch Außenschürze und Tubuswand in einen Gewindeeinsatz in der Innenlippe. Die Tubuswand ist zwischen Schürze und Lippe eingespannt. Es muss nichts gebohrt werden, und die Lage am Umfang ist durch die Bohrungen festgelegt. Mit Rändelschrauben geht das Abnehmen weiterhin ohne Werkzeug. Die Innenlippe kostet nur etwa 2 mm vom Innendurchmesser, die freie Öffnung von 200 mm bleibt unberührt. Gedruckt wird der Klemmring stehend mit der Lippe nach unten, so entsteht kein Überhang.</p>
@@ -577,7 +566,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
   <div class="sheet">
     <div class="sheet-head"><h3>Blatt 3 · Frontansicht</h3><span class="code">FFP-TK-003</span></div>
     <div class="controls"><label for="lidOn"><input type="checkbox" id="lidOn"> Deckel zeigen</label></div>
-    <svg viewBox="40 10 320 360" role="img" aria-label="Frontansicht mit Spinne, Klemmschrauben und Box">
+    <svg viewBox="40 10 320 360" role="img" aria-label="Frontansicht mit Spinne, Schrauben und Antriebsblock">
       <circle cx="200" cy="220" r="120" fill="var(--cap)"/>
       <circle cx="200" cy="220" r="116" fill="var(--tube)" stroke="var(--ink)" stroke-width=".8"/>
       <circle cx="200" cy="220" r="112" fill="var(--sheet)" stroke="var(--ink)" stroke-width=".6"/>
@@ -591,7 +580,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <circle id="lidF" cx="200" cy="220" r="123" fill="var(--lid)" opacity=".88" style="display:none"/>
       <text class="lbm" x="254" y="88">Achse</text>
       <text class="lbm" x="240" y="68">Antriebsblock</text>
-      <text class="lbm" x="58" y="366">● Klemmschraube 60°/180°/300°</text>
+      <text class="lbm" x="58" y="366">● Schrauben, Lage nach Bohrungen</text>
       <text class="lbm" x="230" y="366" fill="var(--warn)">■ Spinne 0/90/180/270°</text>
     </svg>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Die Klemmschrauben sitzen um 60° gegen die Spinnenschrauben versetzt. Bei 180° liegen beide aber axial verschieden, das muss am Teleskop geprüft werden.</p>
@@ -607,10 +596,10 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <rect x="172" y="122" width="30" height="40" fill="none" stroke="var(--dim)" stroke-width="1"/><text class="lbm" x="174" y="146">6 V</text>
       <rect x="208" y="122" width="30" height="40" fill="none" stroke="var(--dim)" stroke-width="1"/><text class="lbm" x="210" y="146">FET</text>
       <rect x="110" y="128" width="12" height="14" class="f-acc"/>
-      <rect x="250" y="134" width="10" height="10" fill="var(--warn)"/><text class="lbm" x="240" y="128">Hall AUF</text>
+      <rect x="250" y="134" width="10" height="10" fill="var(--warn)"/><path class="lead-l" d="M255 134 L246 80"/><text class="lbm" x="222" y="76">Hall AUF</text>
       <rect class="hid" x="110" y="184" width="120" height="66"/><text class="lbm" x="140" y="214">EL-Inverter</text><text class="lbm" x="140" y="228">(Maß offen)</text>
-      <rect class="hid" x="302" y="119" width="96" height="97"/><text class="lbm" x="312" y="164">Servo DS3218</text><text class="lbm" x="312" y="178">270°, PWM</text>
-      <rect x="340" y="230" width="10" height="10" fill="var(--warn)"/><text class="lbm" x="300" y="252">Hall ZU</text>
+      <rect class="hid" x="302" y="119" width="96" height="97"/><text class="lbm" x="308" y="150">Servo</text><text class="lbm" x="308" y="164">DS3218</text><text class="lbm" x="308" y="178">270°</text>
+      <rect x="340" y="230" width="10" height="10" fill="var(--warn)"/><text class="lbm" x="284" y="239">Hall ZU</text>
       <line class="ctr" x1="383" y1="76" x2="383" y2="282"/>
       <rect x="371" y="82" width="24" height="14" fill="var(--lid)"/><rect x="371" y="262" width="24" height="14" fill="var(--lid)"/>
       <circle cx="383" cy="244" r="9" fill="none" stroke="var(--ink)"/><circle cx="383" cy="244" r="3.5" fill="var(--accent)"/>
@@ -621,7 +610,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <rect x="250" y="256" width="24" height="10" fill="var(--ink)"/><text class="lbm" x="200" y="282">Heizung Fangspiegel</text>
       <text class="lbm" x="300" y="300">Kappenvorderkante</text>
       <text class="lbm" x="400" y="80">Deckelarm</text>
-      <text class="lbm" x="400" y="248">608-Lager</text>
+      <text class="lbm" x="400" y="232">608-Lager</text>
       <text class="lbm" x="100" y="92">← hinten (Okularseite)</text><text class="lbm" x="270" y="92">vorne →</text>
     </svg>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Die Platine ist schmal (ca. 72 × 28 mm) und liegt neben dem Inverter, der Servo sitzt vorne quer. Die Blockhöhe von etwa 24 mm ergibt sich aus Servo und Inverter, die Platine selbst ist mit reiner SMD-Bestückung flach. Die Hall-Sensoren nutzen die Magnete, die ohnehin da sind: „ZU“ spricht auf einen Magneten im Deckelarm an, „AUF“ auf den Parkmagneten im Deckel. Der BME280 sitzt hinten an einer Lüftungsöffnung, damit er Außenluft misst und nicht die Wärme von Inverter und Spannungswandler. Das EL-Kabel läuft durch die hohle Achse auf der Lagerseite. So wickelt es sich beim Öffnen nicht auf. Achtung: Hinter dem Inverter liegt Wechselspannung von etwa 100 V. Die Leitung muss isoliert sein und gegen Knicken gesichert werden.</p>
@@ -632,7 +621,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
   <div class="sheet">
     <div class="sheet-head"><h2>Blatt 5 · Deckel mit Trägerplatte, Explosionsdarstellung</h2><span class="code">FFP-TK-005</span></div>
     <div class="draw">
-    <svg viewBox="0 0 820 330" role="img" aria-label="Explosionsdarstellung des Deckels in fünf Lagen">
+    <svg viewBox="0 0 820 330" role="img" aria-label="Explosionsdarstellung des Deckels aus Rahmen und Trägerplatte">
       <line class="ctr" x1="20" y1="150" x2="800" y2="150"/>
       <path d="M150 39 L166 39 A26 111 0 0 1 166 261 L150 261" fill="var(--lid)" stroke="var(--ink)" stroke-width=".8"/>
       <ellipse cx="150" cy="150" rx="26" ry="111" fill="var(--lid)" stroke="var(--ink)" stroke-width=".8"/>
@@ -701,16 +690,14 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     <div class="tbl"><table>
       <thead><tr><th>Teil</th><th>Abmessung</th><th>Bett</th></tr></thead>
       <tbody>
-        <tr><td>Klemmring mit U-Profil</td><td class="n"><span class="xOD">238,5</span> × 35</td><td class="ok bedA">passt</td></tr>
-        <tr><td>Mittelring</td><td class="n"><span class="xOD">238,5</span> × 80</td><td class="ok bedA">passt</td></tr>
-        <tr><td>Frontring mit Box-Sattel</td><td class="n"><span class="xOD">238,5</span> × 110</td><td class="ok bedA">passt</td></tr>
+        <tr><td>Taukappe in einem Stück (U-Profil, Rillen, Schiene, Kabelkanal)</td><td class="n">Ø<span class="xOD">238,5</span> × 225</td><td class="ok bedA">passt</td></tr>
         <tr><td>Deckelschale</td><td class="n">Ø<span class="xLid">246,5</span> × 14</td><td class="ok" id="bedLid">passt</td></tr>
         <tr><td>Haltering Deckel</td><td class="n">Ø<span class="xLid">246,5</span> × 4</td><td class="ok" id="bedLid2">passt</td></tr>
         <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">≈ 130 × 66 × 24</td><td class="ok">passt</td></tr>
         <tr><td>Deckelarme (gekröpft), Lagerdeckel</td><td class="n">klein</td><td class="ok">passt</td></tr>
       </tbody>
     </table></div>
-    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Ringe werden über eine 5 mm tiefe Steckfuge mit Bajonett-Nocken verbunden, nicht verklebt. So lässt sich die Kappe zum Transport zerlegen.</p>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird stehend gedruckt, Klemmring unten. Die Rillen sind als Sägezahn mit 45°-Flanke ausgelegt und brauchen keine Stützen. Die steile Seite zeigt nach vorn zum einfallenden Licht. Optional innen Velours-Flockfolie. Für Drucker unter 230 mm Bauhöhe lässt sich die Kappe im CAD in zwei Teile mit Steckfuge trennen.</p>
   </div>
   <div class="sheet">
     <h3>Zukaufteile</h3>

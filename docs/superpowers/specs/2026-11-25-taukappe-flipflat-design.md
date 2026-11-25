@@ -1,6 +1,6 @@
 # Taukappe mit FlipFlat-Deckel für Skywatcher 200/1000 PDS – Design
 
-Stand: 25.11.2026 · Entwurf Rev I · Status: **Design abgestimmt, Messwerte ausstehend**
+Stand: 25.11.2026 · Entwurf Rev J · Status: **Design abgestimmt, Messwerte ausstehend**
 
 Visueller Entwurf mit Maßzeichnungen, Bewegungsstudie und 3D-Animation:
 [`docs/hardware/taukappe-entwurf.html`](../../hardware/taukappe-entwurf.html)
@@ -22,7 +22,9 @@ Funktioniert gut und wird übernommen: **EL-Folie auf Trägerplatte geklebt**. D
 
 ## Entscheidungen
 
-1. **Kappe voll gedruckt (Konzept A)**, 3 Ringsegmente, gesamt 225 mm (Klemmring 35 / Mittelring 80 / Frontring 110). Verbunden über eine Steckfuge mit Bajonett-Nocken. Material PETG oder ASA, schwarz matt, Wand 2,0 mm, innen 3 Blendenringe.
+1. **Kappe voll gedruckt (Konzept A), ein Druckteil**, 225 mm lang, Ø außen ca. 238,5 mm. Passt stehend auf einen Drucker mit 256 mm Bauhöhe, gedruckt wird mit dem Klemmring nach unten. Material PETG oder ASA, schwarz matt, Wand 2,0 mm.
+   - **Streulicht:** Statt Blendenringen hat die Innenwand feine umlaufende Rillen (Sägezahn, 0,8 mm hoch, Teilung 3 mm). Die 45°-Flanke zeigt nach unten und braucht deshalb keine Stützen, die steile Seite zeigt nach vorn zum einfallenden Licht. Optional kann innen Velours-Flockfolie eingeklebt werden.
+   - Für Drucker unter 230 mm Bauhöhe lässt sich die Kappe im CAD-Modell in zwei Teile mit Steckfuge trennen.
 2. **Befestigung: Randklemmung mit U-Profil** (Prinzip wie bei der Strato-Taukappe von 3D-Druck Krug, eigene Geometrie):
    - Der weiße Frontring des Tubus (innen 220 mm) wird **abgebaut**.
    - Die Innenlippe (1,6 mm, ca. 20 mm tief) greift in den Tubus und zentriert, die Außenschürze liegt außen an, die Schulter sitzt an der Vorderkante.
@@ -48,7 +50,7 @@ Funktioniert gut und wird übernommen: **EL-Folie auf Trägerplatte geklebt**. D
    - Steuerung per Alpaca über WLAN. USB-C am Block nur für Service.
 9. **Elektronik neu**: eigene Platine mit ESP32 und ASCOM Alpaca, zugeschnitten auf den Block. Die Nano-Platine MK3 wird nicht übernommen.
 
-Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, Filz mit Rändelschrauben-Klemmung, Lagenaufbau des Deckels mit Diffusor und Schaum.
+Verworfen: drei Ringsegmente mit Bajonett und Blendenringe (Rev I), Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, Filz mit Rändelschrauben-Klemmung, Lagenaufbau des Deckels mit Diffusor und Schaum.
 
 ## Elektronik im Antriebsblock
 
@@ -136,4 +138,4 @@ Vorläufig **ca. 130 × 66 × 24 mm**: Platine und Inverter hinten nebeneinander
 2. Implementierungsplan schreiben (writing-plans)
 3. Platine für den Block entwerfen (Schaltung aus dem ESP32-Entwurf, Format aus dem CAD-Modell)
 4. Parametrisches CAD-Modell, Werkzeug noch offen: OpenSCAD (Empfehlung, versionierbar) oder Fusion
-5. Zuerst Testdrucke: ein Segment des Klemmrings und ein Magnet-Testring
+5. Zuerst Testdrucke: ein kurzer Abschnitt des Klemmrings (U-Profil, ca. 40 mm hoch) und ein Magnet-Testring
