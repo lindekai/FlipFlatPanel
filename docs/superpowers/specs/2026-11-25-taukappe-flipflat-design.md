@@ -63,12 +63,22 @@ Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, F
 
 **Hall-Endlagen ohne zusätzliche Magnete:** Der Sensor „ZU“ in der Nase spricht auf einen Magneten im Deckelarm an. Der Sensor „AUF“ unter der Oberseite des Blocks spricht auf den Parkmagneten im Deckel an. Damit meldet der Treiber den echten `CoverState` statt eines angenommenen.
 
-### Servo (Entscheidung: klassischer PWM-Servo)
+### Servo (Entscheidung: DS3218MG, 270°-Version, PWM)
 
-- DS3218 mit 270°, 20 kg·cm, Metallgetriebe, 40 × 20 × 40,5 mm. Er liegt quer in der Nase, die Welle ist die Deckelachse.
-- Bedarf: ca. 4 kg·cm für das Deckelgewicht und ca. 4 kg·cm für die Magnete beim Öffnen. Reserve reichlich. An 6 V statt 5 V liefert er mehr Moment.
+| | Moment |
+|---|---|
+| Deckelgewicht (ca. 300 g, Hebel ca. 14 cm) | ca. 4 kg·cm |
+| Magnete lösen | ca. 4 kg·cm |
+| Bedarf | ca. 8 kg·cm |
+| mit doppelter Sicherheit | ca. 16 kg·cm |
+| MG90S (ESP32-Entwurf) | ca. 2 kg·cm, zu schwach |
+| **DS3218MG** | **ca. 19–21 kg·cm** (Herstellerangabe, beim Kauf prüfen) |
+
+- **Mechanisch:** 40 × 20 × 40,5 mm, Metallgetriebe, Befestigungslaschen, 25-Zahn-Welle mit geklemmtem Alu-Servohorn. Er liegt quer in der Nase, die Welle ist die Deckelachse.
+- **Elektrisch:** 6 V vom Wandler auf der eigenen Platine (mindestens 3 A, Puffer-Elko ca. 1000 µF). Blockierstrom bis ca. 2,5 A. Das PWM-Signal kommt vom ESP32 über einen Pegelwandler 3,3 → 5 V. 500–2500 µs entsprechen dem vollen 270°-Weg.
+- **Beim Kauf ausdrücklich die 270°-Version wählen.** Mit 180° gibt es keine Parkposition auf dem Block.
+- **Mehr Reserve:** Der DS3225 (ca. 25 kg·cm) hat dieselbe Größe und dieselbe Welle und passt ohne Gehäuseänderung.
 - Der Servo wird nach der Fahrt stromlos geschaltet. Die Magnete halten den Deckel in beiden Endlagen, die Hall-Sensoren bestätigen die Lage.
-- Der Servo aus dem ESP32-Entwurf (SG90/MG90S, 180°) ist zu schwach und wird ersetzt.
 
 ### EL-Inverter
 
@@ -103,7 +113,7 @@ Vorläufig **ca. 130 × 66 × 24 mm**: Platine und Inverter hinten nebeneinander
 6. Abstand von der Vorderkante zum Fangspiegel
 7. Trägerplatte: Ø, Dicke, Material, Gewicht. Ø der Leuchtfläche, Lage und Höhe des Anschlusses
 8. EL-Inverter: L × B × H, wo die Kabel herauskommen, Befestigung (Laschen, Löcher, nur Gehäuse?)
-9. Verbauter Servo (Typ, Drehwinkel, Maße), verbauter Temperaturfühler (Typ, Kabel)
+9. Verbauter Temperaturfühler (Typ, Kabel). Der Servo ist entschieden: DS3218MG 270°
 10. Lage des Antriebsblocks am Umfang (Sucher, Prismenschiene, Balance)
 
 ## Risiken
