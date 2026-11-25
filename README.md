@@ -62,6 +62,12 @@ Stand jetzt, den 06.05.2026, ist die Paltine noch nicht final getestet.
 ![Platine](PCB/PCB_Image.png)
 ![Platine](PCB/Schematic.png)
 
+### Taukappe mit FlipFlat-Deckel (in Planung)
+
+Für den Skywatcher 200/1000 PDS ist eine Taukappe mit integriertem Deckel in Arbeit: Randklemmung am Tubus, Direktantrieb mit 270°-Servo, Magnetschluss und flacher Antriebsblock.
+- Entwurf mit Maßzeichnungen und 3D-Animation: [`docs/hardware/taukappe-entwurf.html`](docs/hardware/taukappe-entwurf.html)
+- Design-Spezifikation und offene Messwerte: [`docs/superpowers/specs/2026-11-25-taukappe-flipflat-design.md`](docs/superpowers/specs/2026-11-25-taukappe-flipflat-design.md)
+
 ## Software-Architektur
 
 Das Projekt besteht aus drei Komponenten:

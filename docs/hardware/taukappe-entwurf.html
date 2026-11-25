@@ -1,0 +1,798 @@
+<title>FlipFlat Taukappe 200PDS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: Zeichnungsblatt – schmale Textspalte, breite Zeichnungsfelder mit Schriftfeld-Optik */
+:root{
+  --bg:#EEF1F0; --sheet:#F9FBFA; --ink:#17212B; --muted:#5A6873; --line:#C7D0D3;
+  --accent:#B8322A; --dim:#2D6A88; --tube:#D9DFE2; --cap:#2A343D; --lid:#3C4650;
+  --diff:#F4F0E6; --el:#9FD8CF; --felt:#7B6A55; --warn:#C9861A; --ok:#2E7D4F;
+  --f-disp:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1317; --sheet:#151C21; --ink:#DCE4E7; --muted:#8D9BA4; --line:#2B363E;
+  --accent:#E05A4C; --dim:#6DB1D1; --tube:#2A343B; --cap:#8996A0; --lid:#5D6A74;
+  --diff:#3A3A33; --el:#3F8F84; --felt:#A08D74; --warn:#E3A23B; --ok:#55B07A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1317; --sheet:#151C21; --ink:#DCE4E7; --muted:#8D9BA4; --line:#2B363E;
+  --accent:#E05A4C; --dim:#6DB1D1; --tube:#2A343B; --cap:#8996A0; --lid:#5D6A74;
+  --diff:#3A3A33; --el:#3F8F84; --felt:#A08D74; --warn:#E3A23B; --ok:#55B07A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:600;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,54px);letter-spacing:.01em}
+h2{font-size:30px}
+h3{font-size:21px}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.lead{font-size:17px;color:var(--muted)}
+header{display:grid;gap:14px}
+section{display:grid;gap:18px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:18px;display:grid;gap:12px;min-width:0}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.code{font:500 12px var(--f-mono);color:var(--muted);letter-spacing:.06em}
+.draw{overflow-x:auto}
+.draw svg{display:block;width:100%;min-width:560px;height:auto}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.concept{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.concept.rec{border-color:var(--accent);box-shadow:inset 0 3px 0 var(--accent)}
+.concept svg{width:100%;height:auto}
+.tag{display:inline-block;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;background:var(--accent);color:var(--sheet)}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px}
+.pc ul{margin:0;padding-left:16px}
+.pc b{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto}
+.ok{color:var(--ok);font-weight:600} .warn{color:var(--warn);font-weight:600}
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.controls label{font:500 12px var(--f-mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+input[type=range]{width:min(320px,100%);accent-color:var(--accent)}
+input[type=number]{width:90px;font:500 15px var(--f-mono);padding:4px 8px;border:1px solid var(--line);border-radius:3px;background:var(--bg);color:var(--ink)}
+button{font:500 13px var(--f-body);padding:7px 14px;border-radius:3px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+button.pri{background:var(--accent);border-color:var(--accent);color:var(--sheet)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--dim);outline-offset:2px}
+.readout{font:500 14px var(--f-mono);font-variant-numeric:tabular-nums}
+.note{border-left:3px solid var(--warn);padding:4px 0 4px 14px;font-size:14px;max-width:none}
+ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
+/* SVG */
+.ln{stroke:var(--ink);fill:none;stroke-width:1.2}
+.thin{stroke:var(--ink);fill:none;stroke-width:.7}
+.hid{stroke:var(--muted);fill:none;stroke-width:.9;stroke-dasharray:4 3}
+.ctr{stroke:var(--muted);fill:none;stroke-width:.6;stroke-dasharray:14 3 2 3}
+.ray{stroke:var(--accent);fill:none;stroke-width:.9;stroke-dasharray:6 4;opacity:.7}
+.dl{stroke:var(--dim);fill:none;stroke-width:.8}
+.dt{fill:var(--dim);font:500 11px var(--f-mono)}
+.lb{fill:var(--ink);font:500 11.5px var(--f-body)}
+.lbm{fill:var(--muted);font:400 10.5px var(--f-body)}
+.f-tube{fill:var(--tube);stroke:var(--ink);stroke-width:1}
+.f-cap{fill:var(--cap)}
+.f-lid{fill:var(--lid);stroke:var(--ink);stroke-width:.8}
+.f-diff{fill:var(--diff);stroke:var(--ink);stroke-width:.6}
+.f-el{fill:var(--el);stroke:var(--ink);stroke-width:.6}
+.f-felt{fill:var(--felt)}
+.f-warn{fill:var(--warn)}
+.f-acc{fill:var(--accent)}
+.f-sheet{fill:var(--sheet);stroke:var(--ink);stroke-width:1}
+.lead-l{stroke:var(--muted);stroke-width:.7;fill:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.pc{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">FlipFlat Panel · Hardware · Entwurf Rev G · 25.11.2026</span>
+  <h1>Taukappe mit FlipFlat-Deckel für den Skywatcher 200/1000 PDS</h1>
+  <p class="lead">Konzeptvergleich, Bewegungsstudie und Maßzeichnungen für eine aufsteckbare Taukappe. Deckel mit EL-Folie und Servo sitzen am vorderen Ende, die Elektronik in einem Gehäuse direkt daneben. Alle Maße sind vorläufig und hängen vom gemessenen Tubusdurchmesser ab.</p>
+</header>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Animation · Auf- und Zuklappen</h2><span class="code">FFP-TK-000 · 3D · Maße Rev F, Tubus-Ø 232</span></div>
+    <div id="viewer" style="position:relative;width:100%;max-width:100%;aspect-ratio:16/10;border-radius:3px;overflow:hidden;background:var(--bg);touch-action:none">
+      <div id="hud" class="readout" style="position:absolute;left:12px;top:10px;z-index:2;pointer-events:none;color:var(--ink);background:color-mix(in srgb,var(--sheet) 80%,transparent);padding:4px 8px;border-radius:3px;font-size:13px">0° · geschlossen</div>
+    </div>
+    <div class="controls">
+      <button class="pri" id="aAuto" type="button">Pause</button>
+      <button id="aOpen" type="button">Öffnen</button>
+      <button id="aClose" type="button">Schließen</button>
+      <button id="aFlat" type="button">Flat an</button>
+      <button id="aCut" type="button">Schnittansicht</button>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Ziehen dreht die Ansicht, Scrollen oder zwei Finger zoomen. Ablauf der Schleife: Deckel zu, EL-Folie leuchtet für die Flats, Servo öffnet weich um 270°, Parkposition auf dem Antriebsblock, schließen. Die Schnittansicht zeigt das U-Profil am Tubusrand, die Blendenringe und das Licht der EL-Folie im Tubus. Die Servozeit von etwa 2,8 s entspricht Geschwindigkeit 6 mit SoftClose. Ohne SoftClose schafft ein DS3218 die 270° in unter einer Sekunde.</p>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+  (function(){
+    const box = document.getElementById('viewer'), hud = document.getElementById('hud');
+    if(!window.THREE || !THREE.OrbitControls){ hud.textContent = '3D-Ansicht konnte nicht geladen werden.'; return; }
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({antialias:true}); } catch(e){ hud.textContent = 'WebGL ist in diesem Browser nicht verfügbar.'; return; }
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.localClippingEnabled = true;
+    renderer.domElement.style.display = 'block';
+    box.appendChild(renderer.domElement);
+
+    const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+    const scene = new THREE.Scene();
+    const setBg = () => { try { scene.background = new THREE.Color(css('--bg') || '#EEF1F0'); } catch(e){ scene.background = new THREE.Color('#EEF1F0'); } };
+    setBg();
+    try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setBg); } catch(e){}
+    new MutationObserver(setBg).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+    const cam = new THREE.PerspectiveCamera(34, 1.6, 5, 8000);
+    cam.position.set(-620, 380, 760);
+    const ctl = new THREE.OrbitControls(cam, renderer.domElement);
+    ctl.target.set(0, 30, 40); ctl.enableDamping = true; ctl.minDistance = 300; ctl.maxDistance = 2200; ctl.update();
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3f46, 0.8));
+    const sun = new THREE.DirectionalLight(0xffffff, 0.95); sun.position.set(-500, 700, 600); scene.add(sun);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.4); rim.position.set(600, 200, -400); scene.add(rim);
+    const elLight = new THREE.PointLight(0xe6f2ff, 0, 900, 1.6); elLight.position.set(0, 0, 180); scene.add(elLight);
+
+    const mats = [];
+    const M = (c, r, m, o) => { const x = new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:r, metalness:m, side:THREE.DoubleSide}, o||{})); mats.push(x); return x; };
+    const mTube = M(0x16171b, 0.38, 0.55), mPetg = M(0x2b3035, 0.85, 0.05), mDark = M(0x0b0c0e, 0.95, 0.0),
+          mAlu = M(0xbfc4ca, 0.3, 0.9), mMirror = M(0x9aa3ad, 0.12, 1.0), mBlack = M(0x111214, 0.6, 0.1),
+          mEL = M(0xd9a99a, 0.6, 0.0, {emissive:0xeaf4ff, emissiveIntensity:0}), mMag = M(0xd5d9dd, 0.25, 1.0);
+
+    function lathe(pts, mat){
+      const g = new THREE.LatheGeometry(pts.map(p => new THREE.Vector2(p[0], p[1])), 160);
+      g.rotateX(Math.PI/2); const m = new THREE.Mesh(g, mat); scene.add(m); return m;
+    }
+    function cylZ(r, h, mat, pos, parent, open){
+      const g = new THREE.CylinderGeometry(r, r, h, 128, 1, !!open); g.rotateX(Math.PI/2);
+      const m = new THREE.Mesh(g, mat); m.position.set(pos[0], pos[1], pos[2]); (parent||scene).add(m); return m;
+    }
+    function bx(w, h, d, mat, pos, parent){
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(pos[0], pos[1], pos[2]); (parent||scene).add(m); return m;
+    }
+    function bar(a, b, w, mat, parent){
+      const A = new THREE.Vector3(a[0],a[1],a[2]), B = new THREE.Vector3(b[0],b[1],b[2]), d = B.clone().sub(A);
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, w*0.7, d.length() + w*0.6), mat);
+      m.position.copy(A).add(B).multiplyScalar(0.5);
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), d.normalize()); parent.add(m); return m;
+    }
+
+    // Tubus 200/1000 PDS (vorderes Stück) – Front bei z = 0
+    lathe([[114,-560],[116,-560],[116,0],[114,0],[114,-560]], mTube);
+    cylZ(113.5, 2, mDark, [0,0,-555]);
+    cylZ(100, 4, mMirror, [0,0,-548]);
+    // Spinne + Fangspiegelhalter
+    bx(1.2, 88, 22, mBlack, [0, 70, -110]); bx(1.2, 88, 22, mBlack, [0, -70, -110]);
+    bx(88, 1.2, 22, mBlack, [70, 0, -110]); bx(88, 1.2, 22, mBlack, [-70, 0, -110]);
+    cylZ(26, 46, mBlack, [0,0,-110]);
+    [[0,1],[0,-1],[1,0],[-1,0]].forEach(d => { const s = cylZ(4, 3, mAlu, [d[0]*117, d[1]*117, -110]); s.rotation.set(d[1]?Math.PI/2:0, d[0]?Math.PI/2:0, 0); });
+
+    // Taukappe: U-Profil, Mantel, verdickte Vorderkante
+    lathe([[111.9,-20],[113.5,-20],[113.5,0],[116.5,0],[116.5,-25],[120.5,-25],[120.5,8],[118.5,13],[118.5,190],[120.5,192],[120.5,200],[114,200],[114,192],[116.5,189],[116.5,3],[111.9,3],[111.9,-20]], mPetg);
+    [60,120,165].forEach(z => lathe([[108,z],[116.6,z],[116.6,z+3],[108,z+3],[108,z]], mPetg));
+    for(let i=0;i<8;i++){ const a = (i+0.5)/8*Math.PI*2; cylZ(3, 0.8, mMag, [Math.sin(a)*117.3, Math.cos(a)*117.3, 200.3]); }
+    // Rändelschrauben
+    [60,180,300].forEach(deg => {
+      const a = deg*Math.PI/180, dir = [Math.sin(a), Math.cos(a)];
+      const k = new THREE.Mesh(new THREE.CylinderGeometry(8, 8, 7, 18), mBlack); k.position.set(dir[0]*128, dir[1]*128, -12); k.rotation.z = -a; scene.add(k);
+      const s = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, 10, 10), mAlu); s.position.set(dir[0]*122, dir[1]*122, -12); s.rotation.z = -a; scene.add(s);
+    });
+
+    // Antriebsblock oben (12 Uhr) mit Nase
+    bx(70, 30, 120, mPetg, [0, 132, 140]);
+    bx(70, 23, 35, mPetg, [0, 135.5, 217.5]);
+    bx(70.6, 0.6, 120.6, mBlack, [0, 141, 140]);
+    bx(10, 9, 3, mBlack, [-16, 130, 79]); bx(9, 4, 3, mAlu, [14, 130, 79]);
+    // Achse, Servohorn, Lager
+    const ax = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 104, 20), mAlu); ax.rotation.z = Math.PI/2; ax.position.set(0, 136, 227); scene.add(ax);
+    const horn = new THREE.Mesh(new THREE.CylinderGeometry(11, 11, 4, 24), mAlu); horn.rotation.z = Math.PI/2; horn.position.set(38, 136, 227); scene.add(horn);
+    const brg = new THREE.Mesh(new THREE.CylinderGeometry(11, 11, 7, 24), mBlack); brg.rotation.z = Math.PI/2; brg.position.set(-38.5, 136, 227); scene.add(brg);
+
+    // Deckel an Drehpunkt (0, 136, 227)
+    const pivot = new THREE.Group(); pivot.position.set(0, 136, 227); scene.add(pivot);
+    cylZ(123.25, 14, mPetg, [0, -136, -20], pivot);
+    cylZ(123.25, 5, mPetg, [0, -136, -29.5], pivot, true);
+    cylZ(112, 1.4, mEL, [0, -136, -27.8], pivot);
+    [45, -45].forEach(x => { bar([x,0,0],[x,-14,4], 8, mPetg, pivot); bar([x,-14,4],[x,-30,-13], 8, mPetg, pivot); });
+
+    // Schnitt
+    const cut = [new THREE.Plane(new THREE.Vector3(1, 0, 0), 0)];
+    let cutOn = false;
+    function setCut(on){ cutOn = on; mats.forEach(m => { m.clippingPlanes = on ? cut : []; m.needsUpdate = true; }); document.getElementById('aCut').textContent = on ? 'Schnitt aus' : 'Schnittansicht'; }
+
+    // Ablauf
+    const ease = k => k < .5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3)/2;
+    const T = 15;
+    function timeline(t){
+      if(t < 1)    return {a:0, el:0, s:'geschlossen'};
+      if(t < 1.6)  return {a:0, el:(t-1)/0.6, s:'Flat: EL-Folie an'};
+      if(t < 4.4)  return {a:0, el:1, s:'Flat-Aufnahme läuft'};
+      if(t < 4.9)  return {a:0, el:1-(t-4.4)/0.5, s:'EL-Folie aus'};
+      if(t < 5.3)  return {a:0, el:0, s:'geschlossen'};
+      if(t < 8.1)  return {a:270*ease((t-5.3)/2.8), el:0, s:'öffnet'};
+      if(t < 10.8) return {a:270, el:0, s:'Parkposition · Beobachtung'};
+      if(t < 13.6) return {a:270*(1-ease((t-10.8)/2.8)), el:0, s:'schließt'};
+      return {a:0, el:0, s:'geschlossen · Magnete halten'};
+    }
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let auto = !reduce, t = 0, last = performance.now();
+    let cur = {a:0, el:0, s:'geschlossen'}, manual = null, flat = false;
+    function apply(st){
+      pivot.rotation.x = -st.a * Math.PI/180;
+      mEL.emissiveIntensity = st.el * 1.3;
+      mEL.color.setHex(st.el > 0.02 ? 0xf2f6fa : 0xd9a99a);
+      elLight.intensity = st.el * 2.2;
+      hud.textContent = Math.round(st.a) + '° · ' + st.s + (st.el > 0.02 ? ' · EL ' + Math.round(st.el*100) + ' %' : '');
+    }
+    function startManual(target, label){
+      auto = false; document.getElementById('aAuto').textContent = 'Automatik';
+      manual = {from:cur.a, to:target, t0:performance.now(), dur:Math.max(1, Math.abs(target-cur.a)/270*2800), label};
+    }
+    document.getElementById('aAuto').addEventListener('click', e => { auto = !auto; manual = null; e.target.textContent = auto ? 'Pause' : 'Automatik'; if(auto){ flat = false; document.getElementById('aFlat').textContent = 'Flat an'; } });
+    document.getElementById('aOpen').addEventListener('click', () => { flat = false; document.getElementById('aFlat').textContent = 'Flat an'; startManual(270, 'öffnet'); });
+    document.getElementById('aClose').addEventListener('click', () => startManual(0, 'schließt'));
+    document.getElementById('aFlat').addEventListener('click', e => {
+      if(cur.a > 1){ startManual(0, 'schließt'); }
+      auto = false; document.getElementById('aAuto').textContent = 'Automatik';
+      flat = !flat; e.target.textContent = flat ? 'Flat aus' : 'Flat an';
+    });
+    document.getElementById('aCut').addEventListener('click', () => setCut(!cutOn));
+    if(!auto) document.getElementById('aAuto').textContent = 'Automatik';
+
+    function resize(){
+      const w = box.clientWidth, h = box.clientHeight || w/1.6;
+      renderer.setSize(w, h, false); renderer.domElement.style.width = '100%'; renderer.domElement.style.height = '100%';
+      cam.aspect = w/h; cam.updateProjectionMatrix();
+    }
+    try { new ResizeObserver(resize).observe(box); } catch(e){ addEventListener('resize', resize); }
+    resize();
+
+    let visible = true;
+    try { new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(box); } catch(e){}
+    function frame(now){
+      requestAnimationFrame(frame);
+      const dt = Math.min(0.1, (now - last)/1000); last = now;
+      if(!visible || document.hidden) return;
+      if(auto){ t = (t + dt) % T; cur = timeline(t); }
+      else if(manual){
+        const k = Math.min(1, (now - manual.t0)/manual.dur);
+        cur = {a: manual.from + (manual.to - manual.from)*ease(k), el:0, s: manual.label};
+        if(k >= 1){ cur.s = manual.to > 0 ? 'Parkposition · Beobachtung' : 'geschlossen · Magnete halten'; manual = null; }
+      }
+      if(!auto && !manual){
+        const target = (flat && cur.a < 1) ? 1 : 0;
+        cur.el += (target - cur.el) * Math.min(1, dt*4);
+        if(flat && cur.a < 1) cur.s = 'Flat-Aufnahme läuft';
+      }
+      apply(cur);
+      ctl.update(); renderer.render(scene, cam);
+    }
+    apply(cur); renderer.render(scene, cam);
+    requestAnimationFrame(frame);
+  })();
+  </script>
+</section>
+
+<section>
+  <h2>Ausgangslage</h2>
+  <div class="grid2">
+    <div class="sheet">
+      <h3>Was die Platine MK3 rev3 schon kann</h3>
+      <ul class="list">
+        <li><b>Q1 / J2:</b> EL-Inverter über MOSFET an D9 (PWM), JST-XH.</li>
+        <li><b>Q2 / J5:</b> zweiter MOSFET-Kanal „Heatingfoil“ an D7. Passt für ein Heizband.</li>
+        <li><b>JP2 → A0:</b> freier Analogeingang, z. B. für einen NTC-Temperaturfühler.</li>
+        <li><b>MP2338 Stepdown 12 → 5 V</b> für den Servo, 1000 µF Puffer am Servo-Header.</li>
+        <li>Platine ca. 55 × 48 mm. DC-Buchse und USB-C auf einer Seite, Servo- und EL-Anschluss auf der anderen.</li>
+      </ul>
+    </div>
+    <div class="sheet">
+      <h3>Randbedingungen</h3>
+      <dl class="kv">
+        <dt>Teleskop</dt><dd>Skywatcher 200/1000 PDS, f/5</dd>
+        <dt>Tubus-Ø außen</dt><dd><span id="kvD">232</span> mm (Annahme, ohne weißen Ring messen)</dd>
+        <dt>Weißer Frontring</dt><dd>innen 220 mm, wird abgebaut</dd>
+        <dt>Freie Öffnung</dt><dd>200 mm</dd>
+        <dt>Fertigung</dt><dd>FDM, Druckbett 256 × 256 mm</dd>
+        <dt>Material</dt><dd>PETG oder ASA, schwarz, matt</dd>
+        <dt>Gehäuse heute</dt><dd>keins, Neuentwurf</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Ist-Stand und was Rev B ändert</h2>
+  <p>Heute sitzt die gedruckte Box mit Kabelbindern oben am Tubus. Der Servo in der Box bewegt den Deckel über Hebel und Schubstange. Der Deckel ist ein Rahmenring mit EL-Folie und liegt geöffnet auf dem Tubus. Das Kabel läuft außen im Geflechtschlauch. Rev B setzt bei den drei Punkten an, die dich stören:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Ist</th><th>Problem</th><th>Rev B</th></tr></thead>
+    <tbody>
+      <tr><td>Box und Scharnier mit Kabelbindern am Tubus</td><td>nicht wiederholgenau, verrutscht</td><td><b>Randklemmung mit U-Profil</b> (Prinzip wie bei der Strato-Taukappe): Die Kappe wird auf den Tubusrand gesteckt, die Innenlippe zentriert sie. Geschraubt wird durch die vorhandenen Bohrungen des weißen Frontrings. Der Ring wird abgebaut, das spart Gewicht. Die Box wird auf eine angeformte Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert. Abnehmen ohne Werkzeug.</td></tr>
+      <tr><td>Servo treibt über Hebel und Schubstange</td><td>Spiel, Winkel begrenzt, Deckel drückt nicht sauber an</td><td><b>Direktantrieb:</b> Die Servowelle ist die Deckelachse (geklemmtes Alu-Servohorn 25T), gegenüber sitzt ein 608-Kugellager. Keine Gelenke, 270° Schwenkbereich.</td></tr>
+      <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (155 × 70 × 28 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, Platine und Inverter auf und ragt nur 28 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
+      <tr><td>Deckel direkt an der Tubusöffnung</td><td>kein Tauschutz</td><td>Der Deckel sitzt an der Vorderkante einer 200 mm langen Kappe. Die vorhandene Trägerplatte mit aufgeklebter EL-Folie wird übernommen, der neue Deckelrahmen wird um sie herum konstruiert.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Drei Konzepte</h2>
+  <p>Allen drei Konzepten gemeinsam sind derselbe Deckelaufbau, dieselbe Servo-Box und eine Klemmung über drei Rändelschrauben. Sie unterscheiden sich darin, wie die Kappe gebaut ist und wie lang sie ist.</p>
+  <div class="grid3">
+    <article class="concept rec">
+      <span class="tag">Empfehlung</span>
+      <h3>A · Voll gedruckte Kappe</h3>
+      <svg viewBox="0 0 300 150" role="img" aria-label="Seitenansicht Konzept A">
+        <path class="f-tube" d="M110 35 H14 c-5 14 5 26 0 40 c-5 14 5 26 0 40 H110 Z"/>
+        <rect class="f-cap" x="95" y="31" width="155" height="4"/><rect class="f-cap" x="95" y="115" width="155" height="4"/>
+        <line class="thin" x1="133" y1="27" x2="133" y2="39"/><line class="thin" x1="183" y1="27" x2="183" y2="39"/>
+        <line class="thin" x1="133" y1="111" x2="133" y2="123"/><line class="thin" x1="183" y1="111" x2="183" y2="123"/>
+        <rect class="f-sheet" x="198" y="16" width="52" height="15" rx="2"/>
+        <rect class="f-lid" x="251" y="29" width="7" height="92" rx="1"/>
+        <circle class="f-acc" cx="256" cy="12" r="3"/><line class="ln" x1="256" y1="12" x2="254" y2="29"/>
+        <text class="lbm" x="96" y="140">3 Ringsegmente · 225 mm · ca. 0,95 kg</text>
+      </svg>
+      <div class="pc">
+        <div><b>Pro</b><ul><li>Nur Drucker und Normteile nötig</li><li>Innen Blendenringe gegen Streulicht</li><li>Gut nachbaubar fürs Repo</li></ul></div>
+        <div><b>Contra</b><ul><li>Schwerstes Konzept</li><li>Lange Druckzeit (ca. 30 h)</li></ul></div>
+      </div>
+    </article>
+    <article class="concept">
+      <span class="tag" style="background:var(--muted)">Variante</span>
+      <h3>B · Ringe + gerollter Mantel</h3>
+      <svg viewBox="0 0 300 150" role="img" aria-label="Seitenansicht Konzept B">
+        <path class="f-tube" d="M110 35 H14 c-5 14 5 26 0 40 c-5 14 5 26 0 40 H110 Z"/>
+        <rect class="f-cap" x="95" y="30" width="30" height="6"/><rect class="f-cap" x="95" y="114" width="30" height="6"/>
+        <rect class="f-cap" x="205" y="30" width="45" height="6"/><rect class="f-cap" x="205" y="114" width="45" height="6"/>
+        <rect x="125" y="32" width="80" height="2" fill="var(--muted)"/><rect x="125" y="116" width="80" height="2" fill="var(--muted)"/>
+        <rect class="f-sheet" x="198" y="15" width="52" height="15" rx="2"/>
+        <rect class="f-lid" x="251" y="29" width="7" height="92" rx="1"/>
+        <circle class="f-acc" cx="256" cy="11" r="3"/><line class="ln" x1="256" y1="11" x2="254" y2="29"/>
+        <text class="lbm" x="96" y="140">Mantel 1 mm HIPS · ca. 0,8 kg</text>
+      </svg>
+      <div class="pc">
+        <div><b>Pro</b><ul><li>Rund 200 g leichter</li><li>Kurze Druckzeit</li><li>Mantel innen beflockbar</li></ul></div>
+        <div><b>Contra</b><ul><li>Plattenmaterial zukaufen</li><li>Weniger steif, Stoß klebt</li></ul></div>
+      </div>
+    </article>
+    <article class="concept">
+      <span class="tag" style="background:var(--muted)">Minimal</span>
+      <h3>C · Kurzer Panel-Ring</h3>
+      <svg viewBox="0 0 300 150" role="img" aria-label="Seitenansicht Konzept C">
+        <path class="f-tube" d="M110 35 H14 c-5 14 5 26 0 40 c-5 14 5 26 0 40 H110 Z"/>
+        <rect class="f-cap" x="95" y="31" width="65" height="4"/><rect class="f-cap" x="95" y="115" width="65" height="4"/>
+        <rect class="f-sheet" x="112" y="16" width="48" height="15" rx="2"/>
+        <rect class="f-lid" x="161" y="29" width="7" height="92" rx="1"/>
+        <circle class="f-acc" cx="166" cy="12" r="3"/><line class="ln" x1="166" y1="12" x2="164" y2="29"/>
+        <text class="lbm" x="96" y="140">100 mm · ca. 0,65 kg</text>
+      </svg>
+      <div class="pc">
+        <div><b>Pro</b><ul><li>Kleinster Hebel am Tubus</li><li>Wenig Windangriff</li></ul></div>
+        <div><b>Contra</b><ul><li>Kaum Tauschutz (50 mm Überstand)</li><li>Erfüllt den Taukappen-Wunsch nicht</li></ul></div>
+      </div>
+    </article>
+  </div>
+  <p class="note">Warum A: Der Entwurf landet als Open-Source-Projekt im Repo. Teile, die man ohne Zukauf von Plattenmaterial drucken kann, lassen sich am leichtesten nachbauen. Die Segmentschnittstelle ist so ausgelegt, dass man den Mittelring später gegen einen Mantel nach B tauschen kann.</p>
+</section>
+
+<section>
+  <h2>Parameter</h2>
+  <div class="sheet">
+    <div class="controls">
+      <label for="dTube">Tubus-Ø außen (mm)</label>
+      <input type="number" id="dTube" value="232" min="220" max="245" step="0.5">
+      <span class="lbm" style="font-size:13px;color:var(--muted)">Ändert die Maße unten und prüft, ob die Teile aufs Druckbett passen.</span>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Maß</th><th>Formel</th><th>Wert</th></tr></thead>
+      <tbody>
+        <tr><td>Tubus-Wandstärke t</td><td>messen, Annahme</td><td class="n"><input type="number" id="tWall" value="1.0" min="0.5" max="3" step="0.1" style="width:70px"> mm</td></tr>
+        <tr><td>Innenlippe außen</td><td>Tubus − 2t − 0,5 Spiel</td><td class="n" id="pLip"></td></tr>
+        <tr><td>Nutbreite (radial)</td><td>t + 0,75</td><td class="n" id="pSlot"></td></tr>
+        <tr><td>Kappe innen</td><td>Tubus + 1,0 Spiel</td><td class="n" id="pID"></td></tr>
+        <tr><td>Kappe außen</td><td>innen + 2 × 2,0 Wand</td><td class="n" id="pOD"></td></tr>
+        <tr><td>Deckel außen</td><td>Kappe außen + 2 × 4 Überdeckung</td><td class="n" id="pLid"></td></tr>
+        <tr><td>Druckbett-Check</td><td>Deckel ≤ 250 mm (3 mm Rand)</td><td class="n" id="pBed"></td></tr>
+        <tr><td>Trägerplatte (max.)</td><td>Kappe innen − 6</td><td class="n" id="pDiff"></td></tr>
+        <tr><td>EL-Folie (Leuchtfläche)</td><td>≥ 210 mm, ideal Diffusor − 3</td><td class="n" id="pEl"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Blatt 1 · Seitenansicht, geschlossen</h2><span class="code">FFP-TK-001 · M 1:~2,5 · mm</span></div>
+    <div class="draw">
+    <svg viewBox="0 40 720 410" role="img" aria-label="Bemaßte Seitenansicht der Taukappe mit geschlossenem Deckel">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 Z" fill="var(--dim)"/></marker>
+      </defs>
+      <line class="ctr" x1="40" y1="250" x2="580" y2="250"/>
+      <!-- Tubus -->
+      <path class="f-tube" d="M330 134 H60 C52 163 68 192 60 221 C52 250 68 279 60 308 C52 337 68 352 60 366 H330 Z"/>
+      <text class="lbm" x="120" y="255">Tubus 200/1000 PDS</text>
+      <!-- Fangspiegel + Spinne -->
+      <line class="hid" x1="300" y1="138" x2="300" y2="362"/>
+      <line x1="286" y1="232" x2="314" y2="268" stroke="var(--ink)" stroke-width="3"/>
+      <rect class="f-warn" x="297" y="127" width="6" height="7"/>
+      <path class="lead-l" d="M300 127 L262 98"/><text class="lb" x="150" y="94">Spinnenschraube (Lage messen!)</text>
+      <!-- Strahlengang -->
+      <line class="ray" x1="330" y1="150" x2="528" y2="150"/><line class="ray" x1="330" y1="350" x2="528" y2="350"/>
+      <text class="lbm" x="350" y="164" fill="var(--accent)">Strahlengang Ø200</text>
+      <!-- Kappe -->
+      <rect class="f-cap" x="305" y="129" width="225" height="4"/>
+      <rect class="f-cap" x="305" y="367" width="225" height="4"/>
+      <g class="f-cap"><rect x="310" y="136" width="23" height="3"/><rect x="310" y="361" width="23" height="3"/><rect x="330" y="129" width="3" height="10"/><rect x="330" y="361" width="3" height="10"/></g>
+      <circle cx="330" cy="134" r="11" fill="none" stroke="var(--accent)" stroke-width=".9"/><text class="lb" x="344" y="122" fill="var(--accent)">A</text>
+      <g class="f-cap">
+        <rect x="375" y="133" width="3" height="10"/><rect x="440" y="133" width="3" height="10"/><rect x="495" y="133" width="3" height="10"/>
+        <rect x="375" y="357" width="3" height="10"/><rect x="440" y="357" width="3" height="10"/><rect x="495" y="357" width="3" height="10"/>
+        <rect x="526" y="133" width="4" height="7"/><rect x="526" y="360" width="4" height="7"/>
+      </g>
+      <g class="thin"><line x1="340" y1="124" x2="340" y2="138"/><line x1="420" y1="124" x2="420" y2="138"/><line x1="340" y1="362" x2="340" y2="376"/><line x1="420" y1="362" x2="420" y2="376"/></g>
+      <text class="lbm" x="300" y="345">Klemm 35</text><text class="lbm" x="356" y="345">Mittel 80</text><text class="lbm" x="452" y="345">Front 110</text>
+      <path class="lead-l" d="M441 143 L470 196"/><text class="lb" x="452" y="210">Blendenringe</text>
+      <!-- Klemmschraube unten -->
+      <rect class="f-acc" x="313" y="371" width="10" height="10" rx="2"/>
+      <path class="lead-l" d="M313 380 L240 395"/><text class="lb" x="80" y="399">Schrauben in vorh. Bohrungen</text>
+      <!-- Elektronikbox + Scharnierbock -->
+      <path class="f-sheet" d="M410 129 V104 Q410 101 413 101 H562 Q565 101 565 104 V124 H530 V129 Z"/>
+      <rect class="hid" x="420" y="112" width="55" height="8"/><text class="lbm" x="422" y="110">PCB</text>
+      <rect class="hid" x="478" y="106" width="34" height="18"/><text class="lbm" x="481" y="119">Inv.</text>
+      <rect class="hid" x="515" y="104" width="40" height="20"/>
+      <circle class="f-acc" cx="557" cy="112" r="4.5"/>
+      <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock 155 × 70 × 28</text>
+      <path class="lead-l" d="M562 104 L590 84"/><text class="lb" x="593" y="82">Servo direkt</text><text class="lbm" x="593" y="95">auf der Deckelachse</text>
+      <!-- Deckel geschlossen -->
+      <g>
+        <path d="M557 112 L561 126 L547 142" fill="none" stroke="var(--lid)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect class="f-lid" x="532" y="126" width="14" height="248" rx="2"/>
+        <rect class="f-diff" x="533" y="138" width="3" height="224"/>
+        <rect class="f-el" x="536.5" y="140" width="1.5" height="220"/>
+      </g>
+      <path class="lead-l" d="M546 300 L580 312"/><text class="lb" x="583" y="316">Deckel mit EL-Folie</text>
+      <!-- Bemaßung horizontal -->
+      <g class="dl"><line x1="305" y1="383" x2="305" y2="434"/><line x1="330" y1="371" x2="330" y2="406"/><line x1="530" y1="373" x2="530" y2="434"/></g>
+      <line class="dl" x1="305" y1="402" x2="330" y2="402" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" x="306" y="397">25</text>
+      <line class="dl" x1="330" y1="402" x2="530" y2="402" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" x="380" y="397">200 Überstand vor Tubus</text>
+      <line class="dl" x1="305" y1="430" x2="530" y2="430" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" x="365" y="425">225 Gesamtlänge</text>
+      <!-- Bemaßung vertikal -->
+      <g class="dl"><line x1="38" y1="134" x2="58" y2="134"/><line x1="38" y1="366" x2="58" y2="366"/></g>
+      <line class="dl" x1="42" y1="134" x2="42" y2="366" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" transform="translate(36 300) rotate(-90)">Ø<tspan id="sD">232</tspan> Tubus</text>
+      <g class="dl"><line x1="552" y1="126" x2="660" y2="126"/><line x1="552" y1="374" x2="660" y2="374"/><line x1="532" y1="129" x2="610" y2="129"/><line x1="532" y1="371" x2="610" y2="371"/></g>
+      <line class="dl" x1="605" y1="129" x2="605" y2="371" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" transform="translate(600 290) rotate(-90)">Ø<tspan id="sOD">238,5</tspan> Kappe</text>
+      <line class="dl" x1="655" y1="126" x2="655" y2="374" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" transform="translate(650 290) rotate(-90)">Ø<tspan id="sLid">246,5</tspan> Deckel</text>
+      <g class="dl"><line x1="395" y1="101" x2="408" y2="101"/><line x1="395" y1="129" x2="408" y2="129"/></g>
+      <line class="dl" x1="400" y1="101" x2="400" y2="129" marker-start="url(#ar)" marker-end="url(#ar)"/>
+      <text class="dt" x="378" y="119">28</text>
+    </svg>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird nur etwa 25 mm weit auf den Tubusrand gesteckt (Detail A). Damit bleiben die Spinnenschrauben voraussichtlich frei. Das muss aber gemessen werden: Die Innenlippe darf innen nicht bis an die Befestigung der Spinne reichen. Die Blendenringe innen verringern Streulicht an der Kappenwand.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Detail A · Randklemmung mit U-Profil</h2><span class="code">FFP-TK-006 · M ~6:1 · Schnitt oberer Rand</span></div>
+    <div class="draw">
+    <svg viewBox="150 100 560 200" role="img" aria-label="Schnitt durch das U-Profil der Randklemmung am Tubusrand">
+      <defs>
+        <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--sheet)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--cap)" stroke-width="1.4"/></pattern>
+      </defs>
+      <!-- Tubuswand -->
+      <rect x="160" y="200" width="170" height="6" class="f-tube"/>
+      <text class="lbm" x="152" y="214">Tubus</text>
+      <!-- Profil -->
+      <path d="M200 185 H342 V185 L342 185 H700 V197 H342 V208 H342 V218 H210 V208 H330 V197 H212 V205 Q204 205 200 197 Z" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+      <!-- Boss für Einsatz -->
+      <path d="M244 185 V162 Q244 158 248 158 H284 Q288 158 288 162 V185 Z" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="258" y="160" width="16" height="37" fill="var(--muted)" opacity=".35"/>
+      <!-- Lippen-Boss mit Gewindeeinsatz -->
+      <path d="M246 218 V230 Q246 234 250 234 H282 Q286 234 286 230 V218 Z" fill="url(#hatch)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="259" y="208" width="14" height="24" fill="var(--muted)" opacity=".55"/>
+      <!-- Schraube durch vorhandene Tubusbohrung -->
+      <rect x="252" y="128" width="28" height="12" rx="3" fill="var(--ink)"/>
+      <rect x="262" y="140" width="8" height="88" fill="var(--ink)"/>
+      <path class="lead-l" d="M280 230 L250 280"/><text class="lb" x="160" y="292">Gewindeeinsatz im Lippen-Boss</text>
+      <!-- Blende/Mantel-Hinweis -->
+      <line class="ctr" x1="160" y1="290" x2="700" y2="290"/>
+      <!-- Labels -->
+      <path class="lead-l" d="M560 197 L560 226"/><text class="lb" x="470" y="240">Mantel 2,0 mm → zur Taukappe</text>
+      <path class="lead-l" d="M336 192 L380 150"/><text class="lb" x="383" y="146">Anschlagschulter am Tubusrand</text>
+      <path class="lead-l" d="M240 213 L300 262"/><text class="lb" x="303" y="266">Innenlippe 1,6 mm, ≈ 20 mm tief, zentriert und stützt</text>
+      <path class="lead-l" d="M220 191 L190 160"/><text class="lb" x="152" y="154">Außenschürze</text>
+      <path class="lead-l" d="M280 134 L330 120"/><text class="lb" x="333" y="118">Schraube durch vorhandene Bohrung im Tubus</text>
+      <!-- Bemaßung Nut -->
+      <line class="dl" x1="355" y1="197" x2="400" y2="197"/><line class="dl" x1="345" y1="208" x2="400" y2="208"/>
+      <line class="dl" x1="395" y1="197" x2="395" y2="208"/>
+      <text class="dt" x="403" y="206">Nut t + 0,75</text>
+    </svg>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Der weiße Frontring wird abgebaut. Die Kappe nutzt seine vorhandenen Bohrungen im Tubus: Die Schraube geht durch Außenschürze und Tubuswand in einen Gewindeeinsatz in der Innenlippe. Die Tubuswand ist zwischen Schürze und Lippe eingespannt. Es muss nichts gebohrt werden, und die Lage am Umfang ist durch die Bohrungen festgelegt. Mit Rändelschrauben geht das Abnehmen weiterhin ohne Werkzeug. Die Innenlippe kostet nur etwa 2 mm vom Innendurchmesser, die freie Öffnung von 200 mm bleibt unberührt. Gedruckt wird der Klemmring stehend mit der Lippe nach unten, so entsteht kein Überhang.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Blatt 2 · Bewegungsstudie Deckel</h2><span class="code">FFP-TK-002 · Drehachse quer zum Tubus</span></div>
+    <div class="controls">
+      <label for="ang">Deckelwinkel</label>
+      <input type="range" id="ang" min="0" max="270" value="0" step="1">
+      <span class="readout"><span id="angOut">0</span>°</span>
+      <span class="readout" id="angState">geschlossen · Flat/Darks</span>
+      <button class="pri" id="bOpen" type="button">Öffnen</button>
+      <button id="bClose" type="button">Schließen</button>
+    </div>
+    <div class="draw">
+    <svg viewBox="180 -250 720 660" role="img" aria-label="Bewegungsstudie des Deckels von 0 bis 270 Grad">
+      <path class="hid" d="M532 374 A263 263 0 1 0 295 87"/>
+      <text class="lbm" x="720" y="-110">Hüllkurve r ≈ 263</text>
+      <line class="ctr" x1="190" y1="250" x2="890" y2="250"/>
+      <path class="f-tube" d="M330 134 H200 C192 163 208 192 200 221 C192 250 208 279 200 308 C192 337 208 352 200 366 H330 Z"/>
+      <rect class="f-cap" x="280" y="129" width="250" height="4"/><rect class="f-cap" x="280" y="367" width="250" height="4"/>
+      <line class="ray" x1="330" y1="150" x2="880" y2="150"/><line class="ray" x1="330" y1="350" x2="880" y2="350"/>
+      <path class="f-sheet" d="M410 129 V104 Q410 101 413 101 H562 Q565 101 565 104 V124 H530 V129 Z"/>
+      <g id="lid">
+        <path d="M557 112 L561 126 L547 142" fill="none" stroke="var(--lid)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect class="f-lid" x="532" y="126" width="14" height="248" rx="2"/>
+        <rect class="f-diff" x="533" y="138" width="3" height="224"/>
+      </g>
+      <circle class="f-acc" cx="557" cy="112" r="5"/>
+      <text class="lb" x="580" y="70">Drehachse: Servo + 608-Lager</text>
+      <text class="lbm" x="250" y="40">Parkposition 270°: Deckel liegt flach auf dem Antriebsblock</text>
+    </svg>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Mit einem 270°-Servo legt sich der Deckel offen flach auf den Antriebsblock. So ragt er nicht als Windsegel quer zum Tubus. Dafür ist der Deckelarm gekröpft und die Drehachse sitzt etwa 27 mm vor der Kappenkante in der Nase des Blocks. Mit einem 180°-Servo würde der Deckel offen senkrecht nach oben stehen. Die Firmware arbeitet schon mit Pulsen von 540 bis 2500 µs, das deckt einen 270°-Servo ab.</p>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="sheet">
+    <div class="sheet-head"><h3>Blatt 3 · Frontansicht</h3><span class="code">FFP-TK-003</span></div>
+    <div class="controls"><label for="lidOn"><input type="checkbox" id="lidOn"> Deckel zeigen</label></div>
+    <svg viewBox="40 10 320 360" role="img" aria-label="Frontansicht mit Spinne, Klemmschrauben und Box">
+      <circle cx="200" cy="220" r="120" fill="var(--cap)"/>
+      <circle cx="200" cy="220" r="116" fill="var(--tube)" stroke="var(--ink)" stroke-width=".8"/>
+      <circle cx="200" cy="220" r="112" fill="var(--sheet)" stroke="var(--ink)" stroke-width=".6"/>
+      <circle cx="200" cy="220" r="100" class="ray"/>
+      <g stroke="var(--ink)" stroke-width="1.2"><line x1="200" y1="108" x2="200" y2="196"/><line x1="200" y1="244" x2="200" y2="332"/><line x1="88" y1="220" x2="176" y2="220"/><line x1="224" y1="220" x2="312" y2="220"/></g>
+      <circle cx="200" cy="220" r="24" fill="var(--lid)"/>
+      <g class="f-warn"><rect x="197" y="102" width="6" height="6"/><rect x="314" y="217" width="6" height="6"/><rect x="197" y="332" width="6" height="6"/><rect x="80" y="217" width="6" height="6"/></g>
+      <g class="f-acc"><circle cx="309" cy="157" r="5"/><circle cx="200" cy="346" r="5"/><circle cx="91" cy="157" r="5"/></g>
+      <rect class="f-sheet" x="165" y="72" width="70" height="28" rx="3"/>
+      <rect x="150" y="80" width="100" height="6" rx="3" fill="var(--accent)"/>
+      <circle id="lidF" cx="200" cy="220" r="123" fill="var(--lid)" opacity=".88" style="display:none"/>
+      <text class="lbm" x="254" y="88">Achse</text>
+      <text class="lbm" x="240" y="68">Antriebsblock</text>
+      <text class="lbm" x="58" y="366">● Klemmschraube 60°/180°/300°</text>
+      <text class="lbm" x="230" y="366" fill="var(--warn)">■ Spinne 0/90/180/270°</text>
+    </svg>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Klemmschrauben sitzen um 60° gegen die Spinnenschrauben versetzt. Bei 180° liegen beide aber axial verschieden, das muss am Teleskop geprüft werden.</p>
+  </div>
+
+  <div class="sheet">
+    <div class="sheet-head"><h3>Blatt 4 · Antriebsblock, radial von außen</h3><span class="code">FFP-TK-004 · 155 × 70 × 28</span></div>
+    <svg viewBox="30 60 470 250" role="img" aria-label="Antriebsblock von außen mit Platine, Inverter, Servo und Lager">
+      <rect class="f-sheet" x="100" y="100" width="310" height="140" rx="6"/>
+      <line class="hid" x1="340" y1="72" x2="340" y2="270"/>
+      <rect class="hid" x="120" y="120" width="110" height="96"/><text class="lb" x="132" y="172">PCB 55 × 48</text>
+      <rect class="hid" x="236" y="130" width="68" height="70"/><text class="lbm" x="242" y="162">EL-</text><text class="lbm" x="242" y="176">Inverter</text>
+      <rect class="hid" x="312" y="130" width="78" height="81"/><text class="lbm" x="318" y="166">Servo</text><text class="lbm" x="318" y="180">DS3218</text>
+      <line class="ctr" x1="394" y1="70" x2="394" y2="272"/>
+      <rect x="382" y="82" width="24" height="14" fill="var(--lid)"/><rect x="382" y="244" width="24" height="14" fill="var(--lid)"/>
+      <circle cx="394" cy="226" r="10" fill="none" stroke="var(--ink)"/><circle cx="394" cy="226" r="4" fill="var(--accent)"/>
+      <rect x="88" y="128" width="14" height="24" fill="var(--ink)"/><rect x="90" y="184" width="12" height="20" rx="3" fill="var(--muted)"/>
+      <text class="lb" x="34" y="144">12 V DC</text><text class="lb" x="34" y="198">USB-C</text>
+      <rect x="160" y="238" width="26" height="12" fill="var(--ink)"/>
+      <text class="lbm" x="110" y="266">Kabelverschraubung: Heizung + Fühler</text>
+      <text class="lbm" x="300" y="290">Kappenvorderkante</text>
+      <text class="lbm" x="412" y="80">Deckelarm</text>
+      <text class="lbm" x="412" y="230">608-Lager</text><text class="lbm" x="412" y="244">Achse hohl</text>
+      <text class="lbm" x="100" y="92">← hinten (Okularseite)</text><text class="lbm" x="290" y="92">vorne →</text>
+    </svg>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Das EL-Kabel läuft durch die hohle Achse auf der Lagerseite. So wickelt es sich beim Öffnen nicht auf. Achtung: Hinter dem Inverter liegt Wechselspannung von etwa 100 V. Die Leitung muss isoliert sein und gegen Knicken gesichert werden.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Blatt 5 · Deckel mit Trägerplatte, Explosionsdarstellung</h2><span class="code">FFP-TK-005</span></div>
+    <div class="draw">
+    <svg viewBox="0 0 820 330" role="img" aria-label="Explosionsdarstellung des Deckels in fünf Lagen">
+      <line class="ctr" x1="20" y1="150" x2="800" y2="150"/>
+      <path d="M150 39 L166 39 A26 111 0 0 1 166 261 L150 261" fill="var(--lid)" stroke="var(--ink)" stroke-width=".8"/>
+      <ellipse cx="150" cy="150" rx="26" ry="111" fill="var(--lid)" stroke="var(--ink)" stroke-width=".8"/>
+      <ellipse cx="150" cy="150" rx="20" ry="100" fill="var(--sheet)" stroke="var(--ink)" stroke-width=".6"/>
+      <g fill="var(--muted)"><circle cx="150" cy="44" r="3"/><circle cx="150" cy="256" r="3"/><circle cx="131" cy="80" r="3"/><circle cx="131" cy="220" r="3"/><circle cx="169" cy="80" r="3"/><circle cx="169" cy="220" r="3"/></g>
+      <path d="M380 49 L388 49 A22 101 0 0 1 388 251 L380 251" fill="var(--muted)" stroke="var(--ink)" stroke-width=".8"/>
+      <ellipse cx="380" cy="150" rx="22" ry="101" fill="var(--muted)" stroke="var(--ink)" stroke-width=".8"/>
+      <ellipse cx="392" cy="150" rx="20" ry="96" class="f-el"/>
+      <rect x="386" y="244" width="12" height="22" fill="var(--ink)"/>
+      <ellipse cx="590" cy="150" rx="22" ry="100" fill="none" stroke="var(--muted)" stroke-dasharray="5 4"/>
+      <line class="dl" x1="680" y1="150" x2="790" y2="150" marker-end="url(#ar2)"/>
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1 L10 5 L0 9 Z" fill="var(--dim)"/></marker></defs>
+      <text class="dt" x="700" y="140">zum Teleskop</text>
+      <g class="lb" text-anchor="middle">
+        <text x="155" y="290">Deckelrahmen (Druck)</text><text x="385" y="290">Trägerplatte + EL-Folie</text><text x="590" y="290">Diffusor (optional)</text>
+      </g>
+      <g class="lbm" text-anchor="middle">
+        <text x="155" y="306">Ø<tspan id="eLid">246,5</tspan> · Lippe, Stahlscheiben, Armaufnahme</text><text x="385" y="306">vorhanden · max. Ø<tspan id="eDiff">228,5</tspan> · EL ≥ Ø<tspan id="eEl">225</tspan></text><text x="590" y="306">nur falls Flats ungleichmäßig</text>
+      </g>
+    </svg>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Übernommen aus dem jetzigen Aufbau: Die EL-Folie ist auf eine Trägerplatte geklebt. Das ist flach, leicht und mechanisch einfach. Die Platte wird in den gedruckten Deckelrahmen gelegt und von 3 bis 4 Klemmnasen oder M3-Schrauben gehalten, so kann man sie zum Tausch herausnehmen. Der Anschluss der Folie zeigt zur Achse hin, von dort läuft das Kabel durch die hohle Achse. Eine Streuscheibe vor der Folie ist nur nötig, falls die Flats ungleichmäßig werden. Der Rahmen ist dafür vorbereitet. Die Lippe am Deckelrand macht den geschlossenen Deckel auch für Dark Frames lichtdicht, die Magnete ziehen ihn plan an (Detail B).</p>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <div class="sheet-head"><h2>Detail B · Magnetschluss und Lichtlabyrinth</h2><span class="code">FFP-TK-007 · M ~5:1 · Schnitt Vorderkante</span></div>
+    <div class="draw">
+    <svg viewBox="150 128 480 180" role="img" aria-label="Schnitt durch Kappenvorderkante und geschlossenen Deckel mit Magnet und Stahlscheibe">
+      <defs>
+        <pattern id="hatchB" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--sheet)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--cap)" stroke-width="1.4"/></pattern>
+        <pattern id="hatchL" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="var(--sheet)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--lid)" stroke-width="1.4"/></pattern>
+      </defs>
+      <!-- Kappe -->
+      <rect x="160" y="186" width="202" height="10" fill="url(#hatchB)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="360" y="172" width="40" height="38" fill="url(#hatchB)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="386" y="178" width="10" height="26" class="f-acc"/>
+      <text class="lb" x="190" y="180">Kappe</text>
+      <!-- Deckel -->
+      <path d="M384 158 H470 V300 H400 V170 H384 Z" fill="url(#hatchL)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="402" y="178" width="6" height="26" fill="var(--muted)"/>
+      <rect x="412" y="216" width="6" height="84" class="f-diff"/>
+      <rect x="418" y="216" width="3" height="84" class="f-el"/>
+      <text class="lb" x="480" y="282">Deckel</text>
+      <!-- Lichtweg -->
+      <path class="ray" d="M300 150 H378 V176"/><text class="lbm" x="372" y="150" fill="var(--accent)">✕</text>
+      <!-- Labels -->
+      <path class="lead-l" d="M391 204 L330 246"/><text class="lb" x="160" y="252">Magnet 6 × 2 mm, eingedruckt</text><text class="lbm" x="160" y="266">Druckpause, 0,6 mm Deckschicht</text>
+      <path class="lead-l" d="M406 184 L480 160"/><text class="lb" x="483" y="158">Stahlscheibe im Deckelring</text>
+      <path class="lead-l" d="M392 160 L330 140"/><text class="lb" x="160" y="140">Lippe übergreift die Kante</text>
+      <text class="lbm" x="483" y="208">Trägerplatte + EL-Folie</text><path class="lead-l" d="M421 220 L480 205"/>
+    </svg>
+    </div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Lichtdicht wird es durch die <b>Lippe</b>: Licht müsste zweimal um die Ecke. Die <b>Magnete</b> ziehen den Deckel nur plan an die Kante. In der Kappe sitzen Magnete, im Deckel Stahlscheiben, so kann man die Polung nicht verwechseln. Eingedruckt werden sie mit einer Druckpause, es braucht also keinen Kleber. Zusätzlich halten zwei Magnete im Antriebsblock den geöffneten Deckel in der Parkposition fest.</p>
+    <dl class="kv">
+      <dt>Warum das zur Firmware passt</dt><dd style="font-family:var(--f-body)">Die Firmware schickt nur 700 ms lang Pulse, danach ist der Servo kraftlos. Ohne Magnete könnte der Deckel bei schräg stehendem Tubus aufklappen. Mit Magneten hält er in beiden Endlagen von selbst.</dd>
+      <dt>Grenze für die Haltekraft</dt><dd style="font-family:var(--f-body)">Jeder Magnet hat zur Achse einen Hebel von 2 bis 26 cm. Damit der DS3218 sicher öffnet, sollten alle Magnete zusammen höchstens etwa 400–500 g Haltekraft haben. Richtwert: 8 × 6 × 2 mm N35 hinter 0,6 mm Deckschicht. Die Haltekraft lässt sich über die Dicke der Deckschicht einstellen, am besten mit einem Testring vorher ausprobieren.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="sheet">
+    <h3>Druckteile und Druckbett 256 mm</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Teil</th><th>Abmessung</th><th>Bett</th></tr></thead>
+      <tbody>
+        <tr><td>Klemmring mit U-Profil</td><td class="n"><span class="xOD">238,5</span> × 35</td><td class="ok bedA">passt</td></tr>
+        <tr><td>Mittelring</td><td class="n"><span class="xOD">238,5</span> × 80</td><td class="ok bedA">passt</td></tr>
+        <tr><td>Frontring mit Box-Sattel</td><td class="n"><span class="xOD">238,5</span> × 110</td><td class="ok bedA">passt</td></tr>
+        <tr><td>Deckelschale</td><td class="n">Ø<span class="xLid">246,5</span> × 14</td><td class="ok" id="bedLid">passt</td></tr>
+        <tr><td>Haltering Deckel</td><td class="n">Ø<span class="xLid">246,5</span> × 4</td><td class="ok" id="bedLid2">passt</td></tr>
+        <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">155 × 70 × 28</td><td class="ok">passt</td></tr>
+        <tr><td>Deckelarme (gekröpft), Lagerdeckel</td><td class="n">klein</td><td class="ok">passt</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lbm" style="font-size:13px;color:var(--muted)">Die Ringe werden über eine 5 mm tiefe Steckfuge mit Bajonett-Nocken verbunden, nicht verklebt. So lässt sich die Kappe zum Transport zerlegen.</p>
+  </div>
+  <div class="sheet">
+    <h3>Zukaufteile</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Teil</th><th>Hinweis</th></tr></thead>
+      <tbody>
+        <tr><td>Servo DS3218 (270°)</td><td>20 kg·cm. Bedarf statisch ca. 4 kg·cm (Deckel ≈ 300 g, Hebel ≈ 14 cm)</td></tr>
+        <tr><td>Kugellager 608 + Achse Ø8 hohl</td><td>Gegenlager, Kabeldurchführung</td></tr>
+        <tr><td>Trägerplatte mit EL-Folie + Inverter</td><td>vorhanden, wird weiterverwendet</td></tr>
+        <tr><td>Opal-PMMA 2 mm (optional)</td><td>nur bei ungleichmäßigen Flats, Ø<span class="xDiff">228,5</span></td></tr>
+        <tr><td>10× Neodym 6 × 2 mm N35 + 10× Stahlscheibe 6 mm</td><td>8 für den Deckelschluss, 2 für die Parkposition</td></tr>
+        <tr><td>Schrauben passend zu den Bohrungen des weißen Rings</td><td>Rändel- oder Innensechskant, dazu Gewindeeinsätze im Lippen-Boss</td></tr>
+        <tr><td>Heizband 12 V (optional)</td><td>an J5, siehe Hinweis Tau</td></tr>
+        <tr><td>NTC 10 k (optional)</td><td>an JP2 / A0</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="sheet">
+    <h3>Hinweis zum Tau am Newton</h3>
+    <p style="font-size:14px">Beim Newton beschlägt fast immer zuerst der <b>Fangspiegel</b>. Die Taukappe schützt ihn passiv, indem sie die Abstrahlung zum Himmel verringert. Ein Heizband in der Kappe wärmt dagegen nur die Kappe selbst. Der Heizkanal Q2/J5 wirkt deshalb besser an einem kleinen Heizstreifen hinten am Fangspiegelhalter. Das Kabel läuft an einer Spinnenstrebe entlang und durch die M12-Verschraubung der Box. Mit dem NTC an A0 kann die Firmware später nach dem Taupunkt regeln.</p>
+  </div>
+  <div class="sheet">
+    <h3>Elektrik prüfen, bevor gedruckt wird</h3>
+    <ul class="list" style="font-size:14px">
+      <li>Ein DS3218 zieht beim Blockieren bis zu ca. 2,5 A. Prüfen, ob der MP2338-Stepdown diesen Spitzenstrom liefert. Die Platine ist laut Repo noch ungetestet.</li>
+      <li>Der Deckel ist ein Hebel: Ein langsames Anfahren (SoftClose) schont Getriebe und Spinne.</li>
+      <li>Etwa 1 kg zusätzlich vorne am Tubus, abzüglich des weißen Rings. Den Tubus in den Rohrschellen nach vorn schieben oder hinten ein Gegengewicht anbringen.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sheet">
+    <h3>Messliste am Teleskop</h3>
+    <ol class="steps" style="font-size:14px">
+      <li>Außendurchmesser des Tubus vorne, <b>nach Abbau des weißen Rings</b> (Maßband ÷ π oder Messschieber an drei Stellen).</li>
+      <li>Bohrungen des weißen Rings im Tubus: Anzahl, Winkellage (z. B. von 12 Uhr aus), Abstand von der Vorderkante, Ø bzw. Gewinde. Wie war der Ring befestigt (Blechschraube, Mutter, Niet)?</li>
+      <li>Gewicht des weißen Rings (die Ersparnis).</li>
+      <li>Abstand der vier Spinnenschrauben von der Vorderkante, Kopfhöhe und Kopf-Ø. Innen: Wie weit hinten beginnt die Befestigung der Spinne (Grenze für die Innenlippe)?</li>
+      <li>Wandstärke des Tubus an der Vorderkante. Ist die Kante gerade, gebördelt oder mit einem Ring versehen?</li>
+      <li>Hat der Tubus vorne einen Kunststoffring oder einen Bördelrand? Wenn ja: Höhe und Ø.</li>
+      <li>Lage des Sucherfußes und anderer Anbauteile im vorderen Bereich (Winkel und Abstand).</li>
+      <li>Abstand Vorderkante zum Fangspiegel (für Streulicht und Kappenlänge).</li>
+      <li>Wo der Antriebsblock am Umfang sitzen soll, Standard 12 Uhr (Sucher, Prismenschiene, Kabelführung, Balance).</li>
+      <li>Trägerplatte: Ø, Dicke und Material. Dazu Ø der Leuchtfläche der EL-Folie, Lage und Höhe ihres Anschlusses und das Gewicht der Platte mit Folie. Außerdem die Maße des EL-Inverters (L × B × H).</li>
+      <li>Welcher Servo ist heute verbaut (Typ, Drehwinkel)? Welcher Temperaturfühler steckt im Metallstift?</li>
+    </ol>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  const f = n => n.toFixed(1).replace('.0','').replace('.',',');
+  const $ = id => document.getElementById(id);
+  function upd(){
+    let D = parseFloat($('dTube').value); if(!(D>=200 && D<=260)) D = 232;
+    let t = parseFloat($('tWall').value); if(!(t>=0.3 && t<=4)) t = 1;
+    const id = D + 1, od = id + 4, lid = od + 8, diff = id - 6, el = Math.max(210, Math.round(diff - 3));
+    $('pLip').textContent = f(D - 2*t - 0.5) + ' mm'; $('pSlot').textContent = f(t + 0.75) + ' mm';
+    $('kvD').textContent = f(D);
+    $('pID').textContent = f(id)+' mm'; $('pOD').textContent = f(od)+' mm'; $('pLid').textContent = f(lid)+' mm';
+    $('pDiff').textContent = f(diff)+' mm'; $('pEl').textContent = 'Ø '+el+' mm';
+    const fit = lid <= 250, margin = (256 - lid)/2;
+    const bed = $('pBed'); bed.textContent = fit ? 'passt (' + f(margin) + ' mm Rand je Seite)' : 'zu groß, Deckel teilen'; bed.className = 'n ' + (fit ? 'ok' : 'warn');
+    ['bedLid','bedLid2'].forEach(k => { $(k).textContent = fit ? 'passt' : 'knapp'; $(k).className = fit ? 'ok' : 'warn'; });
+    document.querySelectorAll('.bedA').forEach(e => { const ok = od <= 250; e.textContent = ok ? 'passt' : 'knapp'; e.className = (ok?'ok':'warn')+' bedA'; });
+    $('sD').textContent = f(D); $('sOD').textContent = f(od); $('sLid').textContent = f(lid);
+    $('eLid').textContent = f(lid); $('eDiff').textContent = f(diff); $('eEl').textContent = el;
+    document.querySelectorAll('.xOD').forEach(e => e.textContent = f(od));
+    document.querySelectorAll('.xLid').forEach(e => e.textContent = f(lid));
+    document.querySelectorAll('.xDiff').forEach(e => e.textContent = f(diff));
+    document.querySelectorAll('.xEl').forEach(e => e.textContent = el);
+  }
+  $('dTube').addEventListener('input', upd); $('tWall').addEventListener('input', upd); upd();
+
+  const lid = $('lid'), ang = $('ang');
+  function setA(a){
+    lid.setAttribute('transform', 'rotate(' + (-a) + ' 557 112)');
+    $('angOut').textContent = Math.round(a); ang.value = a;
+    $('angState').textContent = a < 2 ? 'geschlossen · Flat/Darks' : a > 268 ? 'Parkposition · Beobachtung' : 'fährt …';
+  }
+  ang.addEventListener('input', () => setA(+ang.value));
+  let raf = null;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function go(t){
+    cancelAnimationFrame(raf);
+    if(reduce){ setA(t); return; }
+    const s = +ang.value, t0 = performance.now(), dur = Math.abs(t - s) * 9;
+    (function step(now){
+      const k = Math.min(1, (now - t0) / Math.max(dur,1)), e = k<.5 ? 2*k*k : 1 - Math.pow(-2*k+2,2)/2;
+      setA(s + (t - s) * e);
+      if(k < 1) raf = requestAnimationFrame(step);
+    })(t0);
+  }
+  $('bOpen').addEventListener('click', () => go(270));
+  $('bClose').addEventListener('click', () => go(0));
+  setA(0);
+  $('lidOn').addEventListener('change', e => { $('lidF').style.display = e.target.checked ? '' : 'none'; });
+})();
+</script>
