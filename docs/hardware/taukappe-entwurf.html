@@ -291,7 +291,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
         <li><b>Q2 / J5:</b> zweiter MOSFET-Kanal „Heatingfoil“ an D7. Passt für ein Heizband.</li>
         <li><b>JP2 → A0:</b> freier Analogeingang, z. B. für einen NTC-Temperaturfühler.</li>
         <li><b>MP2338 Stepdown 12 → 5 V</b> für den Servo, 1000 µF Puffer am Servo-Header.</li>
-        <li>Platine ca. 55 × 48 mm. DC-Buchse und USB-C auf einer Seite, Servo- und EL-Anschluss auf der anderen.</li>
+        <li>Platine 60,8 × 52,9 mm (aus Gerber), 4 Befestigungslöcher Ø 3,5 im Raster 56 × 48. Links DC-Buchse und USB-C, rechts Servo, A0 und EL. Die Buchse für die Heizfolie (J5) sitzt auf der Unterseite an der oberen Kante.</li>
       </ul>
     </div>
     <div class="sheet">
@@ -317,7 +317,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
     <tbody>
       <tr><td>Box und Scharnier mit Kabelbindern am Tubus</td><td>nicht wiederholgenau, verrutscht</td><td><b>Randklemmung mit U-Profil</b> (Prinzip wie bei der Strato-Taukappe): Die Kappe wird auf den Tubusrand gesteckt, die Innenlippe zentriert sie. Geschraubt wird durch die vorhandenen Bohrungen des weißen Frontrings. Der Ring wird abgebaut, das spart Gewicht. Die Box wird auf eine angeformte Schwalbenschwanzschiene am Frontring geschoben und mit einer Schraube gesichert. Abnehmen ohne Werkzeug.</td></tr>
       <tr><td>Servo treibt über Hebel und Schubstange</td><td>Spiel, Winkel begrenzt, Deckel drückt nicht sauber an</td><td><b>Direktantrieb:</b> Die Servowelle ist die Deckelachse (geklemmtes Alu-Servohorn 25T), gegenüber sitzt ein 608-Kugellager. Keine Gelenke, 270° Schwenkbereich.</td></tr>
-      <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (155 × 70 × 28 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, Platine und Inverter auf und ragt nur 28 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
+      <tr><td>Servo, Platine und Inverter in einer Box</td><td>Box groß, Kabel außen</td><td><b>Flacher Antriebsblock</b> (≈ 165 × 70 × 32 mm) flach auf dem Frontring statt einer hohen Box. Er nimmt Servo, Platine und Inverter auf und ragt nur etwa 32 mm über die Kappe. Das EL-Kabel läuft durch die hohle Achse.</td></tr>
       <tr><td>Deckel direkt an der Tubusöffnung</td><td>kein Tauschutz</td><td>Der Deckel sitzt an der Vorderkante einer 200 mm langen Kappe. Die vorhandene Trägerplatte mit aufgeklebter EL-Folie wird übernommen, der neue Deckelrahmen wird um sie herum konstruiert.</td></tr>
     </tbody>
   </table></div>
@@ -450,7 +450,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <rect class="hid" x="478" y="106" width="34" height="18"/><text class="lbm" x="481" y="119">Inv.</text>
       <rect class="hid" x="515" y="104" width="40" height="20"/>
       <circle class="f-acc" cx="557" cy="112" r="4.5"/>
-      <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock 155 × 70 × 28</text>
+      <path class="lead-l" d="M440 101 L420 70"/><text class="lb" x="300" y="66">Antriebsblock ≈ 165 × 70 × 32</text>
       <path class="lead-l" d="M562 104 L590 84"/><text class="lb" x="593" y="82">Servo direkt</text><text class="lbm" x="593" y="95">auf der Deckelachse</text>
       <!-- Deckel geschlossen -->
       <g>
@@ -479,7 +479,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <text class="dt" transform="translate(650 290) rotate(-90)">Ø<tspan id="sLid">246,5</tspan> Deckel</text>
       <g class="dl"><line x1="395" y1="101" x2="408" y2="101"/><line x1="395" y1="129" x2="408" y2="129"/></g>
       <line class="dl" x1="400" y1="101" x2="400" y2="129" marker-start="url(#ar)" marker-end="url(#ar)"/>
-      <text class="dt" x="378" y="119">28</text>
+      <text class="dt" x="378" y="119">32</text>
     </svg>
     </div>
     <p class="lbm" style="font-size:13px;color:var(--muted)">Die Kappe wird nur etwa 25 mm weit auf den Tubusrand gesteckt (Detail A). Damit bleiben die Spinnenschrauben voraussichtlich frei. Das muss aber gemessen werden: Die Innenlippe darf innen nicht bis an die Befestigung der Spinne reichen. Die Blendenringe innen verringern Streulicht an der Kappenwand.</p>
@@ -586,11 +586,11 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
   </div>
 
   <div class="sheet">
-    <div class="sheet-head"><h3>Blatt 4 · Antriebsblock, radial von außen</h3><span class="code">FFP-TK-004 · 155 × 70 × 28</span></div>
+    <div class="sheet-head"><h3>Blatt 4 · Antriebsblock, radial von außen</h3><span class="code">FFP-TK-004 · ≈ 165 × 70 × 32</span></div>
     <svg viewBox="30 60 470 250" role="img" aria-label="Antriebsblock von außen mit Platine, Inverter, Servo und Lager">
       <rect class="f-sheet" x="100" y="100" width="310" height="140" rx="6"/>
       <line class="hid" x1="340" y1="72" x2="340" y2="270"/>
-      <rect class="hid" x="120" y="120" width="110" height="96"/><text class="lb" x="132" y="172">PCB 55 × 48</text>
+      <rect class="hid" x="120" y="120" width="110" height="96"/><text class="lb" x="132" y="172">PCB 60,8 × 52,9</text>
       <rect class="hid" x="236" y="130" width="68" height="70"/><text class="lbm" x="242" y="162">EL-</text><text class="lbm" x="242" y="176">Inverter</text>
       <rect class="hid" x="312" y="130" width="78" height="81"/><text class="lbm" x="318" y="166">Servo</text><text class="lbm" x="318" y="180">DS3218</text>
       <line class="ctr" x1="394" y1="70" x2="394" y2="272"/>
@@ -687,7 +687,7 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
         <tr><td>Frontring mit Box-Sattel</td><td class="n"><span class="xOD">238,5</span> × 110</td><td class="ok bedA">passt</td></tr>
         <tr><td>Deckelschale</td><td class="n">Ø<span class="xLid">246,5</span> × 14</td><td class="ok" id="bedLid">passt</td></tr>
         <tr><td>Haltering Deckel</td><td class="n">Ø<span class="xLid">246,5</span> × 4</td><td class="ok" id="bedLid2">passt</td></tr>
-        <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">155 × 70 × 28</td><td class="ok">passt</td></tr>
+        <tr><td>Antriebsblock Unterteil + Deckel</td><td class="n">≈ 165 × 70 × 32</td><td class="ok">passt</td></tr>
         <tr><td>Deckelarme (gekröpft), Lagerdeckel</td><td class="n">klein</td><td class="ok">passt</td></tr>
       </tbody>
     </table></div>
@@ -739,7 +739,8 @@ ol.steps,ul.list{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
       <li>Lage des Sucherfußes und anderer Anbauteile im vorderen Bereich (Winkel und Abstand).</li>
       <li>Abstand Vorderkante zum Fangspiegel (für Streulicht und Kappenlänge).</li>
       <li>Wo der Antriebsblock am Umfang sitzen soll, Standard 12 Uhr (Sucher, Prismenschiene, Kabelführung, Balance).</li>
-      <li>Trägerplatte: Ø, Dicke und Material. Dazu Ø der Leuchtfläche der EL-Folie, Lage und Höhe ihres Anschlusses und das Gewicht der Platte mit Folie. Außerdem die Maße des EL-Inverters (L × B × H).</li>
+      <li>Trägerplatte: Ø, Dicke und Material. Dazu Ø der Leuchtfläche der EL-Folie, Lage und Höhe ihres Anschlusses und das Gewicht der Platte mit Folie. Außerdem die Maße des EL-Inverters (L × B × H), wo seine Kabel herauskommen und wie er befestigt ist.</li>
+      <li>Platine bestückt: Steckt der Nano gelötet oder in Buchsenleisten? Größte Höhe über der Oberseite und unter der Unterseite (J5)?</li>
       <li>Welcher Servo ist heute verbaut (Typ, Drehwinkel)? Welcher Temperaturfühler steckt im Metallstift?</li>
     </ol>
   </div>
