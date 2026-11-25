@@ -61,7 +61,7 @@ Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, F
 2. Bohrungen des weißen Rings: Anzahl, Winkellage, Abstand von der Vorderkante, Ø bzw. Gewinde, Befestigungsart (Blechschraube, Mutter, Niet)
 3. Gewicht des weißen Rings
 4. Wandstärke des Tubus. Form der Vorderkante: gerade oder gebördelt?
-5. Abstand der Spinnenschrauben von der Vorderkante (Grenze für die Tiefe der Innenlippe)
+5. Abstand der Spinnenschrauben von der Vorderkante (Grenze für die Tiefe der Innenlippe). Die Spinne ist eine gefräste Nachrüstspinne, ihre Befestigung kann von der Serie abweichen, deshalb direkt messen.
 6. Abstand von der Vorderkante zum Fangspiegel
 7. Trägerplatte: Ø, Dicke, Material, Gewicht. Ø der Leuchtfläche, Lage und Höhe des Anschlusses
 8. EL-Inverter: L × B × H (entscheidet, ob 28 mm Blockhöhe reichen)
@@ -73,6 +73,7 @@ Verworfen: Alu-Flachprofile längs, TPU-Dichtring, seitlich hängender Deckel, F
 - Kann der MP2338-Stepdown auf der noch ungetesteten Platine den Blockierstrom des DS3218 (bis ca. 2,5 A) liefern?
 - Passen Nano mit Steckleisten, Elkos und Inverter in 28 mm Blockhöhe (ca. 20 mm innen)?
 - Vorne kommt ca. 1 kg dazu, abzüglich des weißen Rings. Der Tubus muss neu ausbalanciert werden.
+- Steifigkeit nach Abbau des weißen Rings: unkritisch. Eine gefräste, steife Fangspiegelspinne ist verbaut, und die Kappe versteift die Vorderkante zusätzlich über Schürze und Innenlippe.
 - Hinter dem Inverter liegt Wechselspannung von ca. 100 V. Die Leitung durch die Achse muss isoliert und gegen Knicken gesichert sein.
 
 ## Nächste Schritte
